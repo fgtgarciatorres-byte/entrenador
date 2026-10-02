@@ -1,0 +1,14 @@
+{
+  "name": "Cancha · Asistente de entrenador",
+  "short_name": "Cancha",
+  "description": "Asistente de voz y planificación para entrenadores de baloncesto infantil.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f1e8",
+  "theme_color": "#12302b",
+  "lang": "es",
+  "icons": [
+    {"src":"bsb-logo.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"bsb-logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
