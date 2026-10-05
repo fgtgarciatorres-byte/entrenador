@@ -15,6 +15,7 @@ const baseCourses = [
 const defaultState = {players:[4,5,7,8,10,12,15], notes:{}, matches:demoMatches, courses:[], teamName:'Equipo infantil', nextOpponent:'CB Telde'};
 let state = loadState();
 let selected = null;
+let clubStats = null;
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -47,6 +48,19 @@ function renderMatches(){
   $('#matchTable').innerHTML = (state.matches || []).map(m => `<tr><td>${escapeHtml(m.date)}</td><td>${escapeHtml(m.opponent)}</td><td class="result-${m.result}">${escapeHtml(m.score)}</td><td>${escapeHtml(m.read)}</td></tr>`).join('');
   $('#bars').innerHTML = (state.matches || []).map(m => `<div class="bar" style="height:${Math.max(35, numbers(m)[0]*2.1)}px"><em>${numbers(m)[0]}</em></div>`).join('');
   $('#chartLabels').innerHTML = (state.matches || []).map(m => `<span>${escapeHtml(m.date)}</span>`).join('');
+}
+function renderClubStats(){
+  if(!clubStats) return;
+  const source=$('#dataSource');
+  if(source) source.textContent=`Fuente: ${clubStats.source} · ${clubStats.team} · ${clubStats.documentedMatches.length} partidos con estadísticas detalladas · solo dorsales en el análisis`;
+  const scope=$('#trainingScope');
+  if(scope) scope.textContent=`${clubStats.documentedMatches.length} partidos detallados`;
+  const plans=$('#trainingPlans');
+  if(plans) plans.innerHTML=(clubStats.trainingPlans || []).map(plan=>`<article class="training-plan"><div class="training-plan-top"><h4>${escapeHtml(plan.title)}</h4><span>${escapeHtml(plan.duration)}</span></div><p>${escapeHtml(plan.why)}</p><ul>${plan.blocks.map(block=>`<li>${escapeHtml(block)}</li>`).join('')}</ul></article>`).join('');
+}
+async function loadClubStats(){
+  try { const response=await fetch('./data/club-stats.json'); if(!response.ok) throw new Error('stats'); clubStats=await response.json(); renderClubStats(); }
+  catch { const source=$('#dataSource'); if(source) source.textContent='Fuente externa no disponible. Puedes cargar un CSV de temporada.'; }
 }
 function renderRoster(){
   $('#roster').innerHTML = (state.players || []).map(n => `<div class="player-card ${selected===n?'selected':''}" data-player="${n}"><div class="jersey">#${n}</div><div class="player-status">${state.notes[n]?'Nota guardada':'Sin nota todavía'}</div></div>`).join('');
@@ -101,7 +115,8 @@ function download(name, content, type){ const link=document.createElement('a'); 
 function contextForChatGPT(){
   const notes=Object.entries(state.notes).map(([d,n])=>`Dorsal #${d}: ${n}`).join('\n') || 'No hay notas de jugadores.';
   const results=(state.matches||[]).map(m=>`${m.date} · ${m.opponent} · ${m.score} · ${m.read}`).join('\n');
-  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nPróximo rival: ${state.nextOpponent}\nPartidos:\n${results}\nNotas por dorsal:\n${notes}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Dame dos prioridades para el próximo entrenamiento.'}`;
+  const scout=clubStats ? `\nFuente de scouting: ${clubStats.team}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses}. El informe contiene ${clubStats.documentedMatches.length} partidos detallados. Usa solo dorsales y evita nombres.` : '';
+  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nPróximo rival: ${state.nextOpponent}\nPartidos:\n${results}\nNotas por dorsal:\n${notes}${scout}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Dame dos prioridades para el próximo entrenamiento.'}`;
 }
 async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch { return false; } }
 function parseCsv(text){
@@ -140,4 +155,4 @@ let deferredInstallPrompt;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;$('#installBtn').hidden=false;});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{$('#assistantHint').textContent='En iPhone: Compartir → Añadir a pantalla de inicio';}};
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-renderMatches(); renderRoster(); renderCourses();
+renderMatches(); renderRoster(); renderCourses(); loadClubStats();

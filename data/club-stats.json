@@ -1,0 +1,119 @@
+{
+  "source": "estadisticas",
+  "sourceFiles": [
+    "112.ods",
+    "clasificacion_05102026.xlsx",
+    "estadisticaPartido_05102026.xlsx",
+    "estadisticaPartido_05102026 (1).xlsx",
+    "jugadores_05102026.xlsx",
+    "estadisticaPartido_05102026 (1).pdf"
+  ],
+  "competition": "Competición Autonómica FCB 26/27",
+  "team": "Canterbury School",
+  "scope": "scouting-oponente",
+  "note": "La carpeta analizada contiene clasificación y estadísticas de Canterbury School y sus rivales. Se usa como referencia de preparación, no como registro del equipo Santa Brígida.",
+  "externalSources": [
+    {
+      "name": "Gesdeportiva FCB",
+      "url": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
+      "status": "referencia externa pendiente de consulta manual",
+      "accessCheck": "La consulta automatizada recibió HTTP 403. No se han incorporado datos no verificables."
+    }
+  ],
+  "classification": {
+    "rank": 2,
+    "played": 3,
+    "wins": 3,
+    "losses": 0,
+    "points": 6,
+    "winRate": 1
+  },
+  "documentedMatches": [
+    {
+      "opponent": "Rest. Araucaria Goleta",
+      "for": 80,
+      "against": 36,
+      "margin": 44,
+      "result": "win",
+      "team": {
+        "twoMade": 30,
+        "twoAttempts": 53,
+        "threeMade": 6,
+        "threeAttempts": 27,
+        "freeMade": 2,
+        "freeAttempts": 12,
+        "rebounds": 31,
+        "assists": 16,
+        "steals": 14,
+        "turnovers": 14,
+        "fouls": 25,
+        "valuation": 54
+      },
+      "topContributors": [
+        { "dorsal": 2, "points": 22, "valuation": 22, "rebounds": 3, "assists": 0 },
+        { "dorsal": 8, "points": 8, "valuation": 9, "rebounds": 3, "assists": 2 },
+        { "dorsal": 4, "points": 6, "valuation": 2, "rebounds": 3, "assists": 1 }
+      ]
+    },
+    {
+      "opponent": "Tenerife Central Alteza",
+      "for": 60,
+      "against": 51,
+      "margin": 9,
+      "result": "win",
+      "team": {
+        "twoMade": 19,
+        "twoAttempts": 49,
+        "threeMade": 4,
+        "threeAttempts": 20,
+        "freeMade": 10,
+        "freeAttempts": 20,
+        "rebounds": 54,
+        "assists": 10,
+        "steals": 20,
+        "turnovers": 24,
+        "fouls": 27,
+        "valuation": 53
+      },
+      "topContributors": [
+        { "dorsal": 2, "points": 16, "valuation": 24, "rebounds": 17, "assists": 2 },
+        { "dorsal": 5, "points": 11, "valuation": 9, "rebounds": 8, "assists": 3 },
+        { "dorsal": 4, "points": 13, "valuation": 16, "rebounds": 8, "assists": 0 }
+      ]
+    }
+  ],
+  "playerSignals": [
+    { "dorsal": 2, "matches": 2, "avgPoints": 19, "avgValuation": 23, "avgRebounds": 10, "avgAssists": 1, "signal": "principal foco ofensivo y rebote" },
+    { "dorsal": 4, "matches": 2, "avgPoints": 9.5, "avgValuation": 9, "avgRebounds": 5.5, "avgAssists": 0.5, "signal": "finalización y tiros libres" },
+    { "dorsal": 5, "matches": 2, "avgPoints": 8.5, "avgValuation": 5.5, "avgRebounds": 6, "avgAssists": 2, "signal": "rebote y continuidad" },
+    { "dorsal": 8, "matches": 2, "avgPoints": 4, "avgValuation": 7, "avgRebounds": 3.5, "avgAssists": 1, "signal": "eficiencia cerca del aro" },
+    { "dorsal": 17, "matches": 2, "avgPoints": 5, "avgValuation": 1, "avgRebounds": 3.5, "avgAssists": 2, "signal": "toma de decisiones bajo presión" },
+    { "dorsal": 32, "matches": 2, "avgPoints": 4, "avgValuation": 2.5, "avgRebounds": 3, "avgAssists": 1.5, "signal": "ocupación de espacios y balance" }
+  ],
+  "trainingPlans": [
+    {
+      "title": "Contener la primera ventaja del dorsal #2",
+      "duration": "15 min",
+      "why": "Promedia 19 puntos, 10 rebotes y 23 de valoración en los dos partidos documentados.",
+      "blocks": ["2x2 con ayuda temprana y cierre de rebote", "3x3: negar recepción cómoda y rotar tras pase", "Cierre: identificar quién comunica la ayuda"]
+    },
+    {
+      "title": "Subir la eficiencia de tiro",
+      "duration": "20 min",
+      "why": "El equipo registra 49% en tiros de dos, 21% en triples y 42% en tiros libres en la muestra disponible.",
+      "blocks": ["Finalizaciones con ambas manos tras ventaja", "Tiro exterior tras pase extra, sin forzar", "Rutina de dos respiraciones antes del tiro libre"]
+    },
+    {
+      "title": "Cuidar la posesión bajo presión",
+      "duration": "15 min",
+      "why": "Los dos partidos muestran 19 pérdidas de media. La sesión debe dar una respuesta concreta al estrés competitivo.",
+      "blocks": ["Recepción abierta y pivote con dos salidas", "3x3 con una pérdida = pausa, respiración y nueva decisión", "Repetición final con marcador y tiempo limitado"]
+    },
+    {
+      "title": "Cerrar el entreno con confianza colectiva",
+      "duration": "10 min",
+      "why": "La ventaja media documentada es de 26,5 puntos. Conviene entrenar concentración y comunicación cuando el partido se aprieta.",
+      "blocks": ["Juego reducido con objetivo de comunicación", "Cada jugador nombra una ayuda útil de un compañero", "Mensaje final centrado en esfuerzo y decisión"]
+    }
+  ]
+}
