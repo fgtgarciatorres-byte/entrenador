@@ -1,0 +1,40 @@
+{
+  "team": "Santa Cruz",
+  "competition": "Competición Autonómica FCB 26/27 · Cadete Femenina · Liga Regular · Grupo A",
+  "role": "next-opponent-scouting",
+  "lastUpdated": "2026-10-19",
+  "officialSource": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
+  "coverage": "resultado oficial reciente; sin boxscore detallado",
+  "matches": [
+    {
+      "date": "17/10/2026",
+      "opponent": "Obras y Servicios Fede BG EB Felipe Antón",
+      "for": 66,
+      "against": 61,
+      "result": "win",
+      "dataLevel": "resultado oficial sin boxscore detallado"
+    }
+  ],
+  "limitations": "No hay porcentajes de tiro, rebotes, pérdidas, parciales ni datos individuales verificables. No se atribuyen patrones técnicos al rival a partir de este único marcador.",
+  "weekStrategy": {
+    "confidence": "baja",
+    "objective": "Preparar respuestas transferibles ante un rival todavía poco descrito",
+    "sessions": [
+      {
+        "day": "Sesión 1",
+        "focus": "Control del balón y toma de decisiones",
+        "blocks": ["Recepción y pivote con dos salidas", "3x3 con ventaja y repliegue inmediato", "Cierre con una posesión y una consigna" ]
+      },
+      {
+        "day": "Sesión 2",
+        "focus": "Defensa colectiva y rebote",
+        "blocks": ["Comunicar bloqueos y ayudas", "Box-out desde situaciones de tiro", "5x5 con puntuación por rebote y balance" ]
+      },
+      {
+        "day": "Sesión 3",
+        "focus": "Final de partido",
+        "blocks": ["Marcador ajustado con tres minutos", "Tiros libres después de esfuerzo", "Tiempo muerto y decisión de la última posesión" ]
+      }
+    ]
+  }
+}

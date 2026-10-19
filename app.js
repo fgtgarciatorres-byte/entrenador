@@ -16,6 +16,7 @@ const defaultState = {players:[2,4,5,8,17,32], notes:{}, matches:demoMatches, co
 let state = loadState();
 let selected = null;
 let clubStats = null;
+let rivalScout = null;
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -64,6 +65,18 @@ function renderClubStats(){
   const plans=$('#trainingPlans');
   if(plans) plans.innerHTML=(clubStats.trainingPlans || []).map(plan=>`<article class="training-plan"><div class="training-plan-top"><h4>${escapeHtml(plan.title)}</h4><span>${escapeHtml(plan.duration)}</span></div><p>${escapeHtml(plan.why)}</p><ul>${plan.blocks.map(block=>`<li>${escapeHtml(block)}</li>`).join('')}</ul></article>`).join('');
 }
+function renderRivalScout(){
+  if(!rivalScout) return;
+  const opponent=$('#opponentName');
+  if(opponent) opponent.textContent=rivalScout.team;
+  const panel=opponent?.closest('.opponent-panel');
+  if(panel){
+    const label=panel.querySelector('strong');
+    const text=panel.querySelector('p');
+    if(label) label.textContent=rivalScout.coverage.includes('sin boxscore') ? 'Cobertura limitada' : 'Scouting cargado';
+    if(text) text.textContent=`${rivalScout.team}: ${rivalScout.matches.length} resultado oficial cargado. ${rivalScout.limitations}`;
+  }
+}
 async function loadClubStats(){
   try {
     const response=await fetch('./data/club-stats.json', {cache:'no-store'});
@@ -86,6 +99,14 @@ async function loadClubStats(){
     renderClubStats();
   }
   catch { const source=$('#dataSource'); if(source) source.textContent='Fuente externa no disponible. Puedes cargar un CSV de temporada.'; }
+  try {
+    const response=await fetch('./data/rival-scout.json', {cache:'no-store'});
+    if(!response.ok) throw new Error('rival');
+    rivalScout=await response.json();
+    const expected=clubStats?.upcomingMatch?.opponent || state.nextOpponent;
+    if(rivalScout.team !== expected) rivalScout=null;
+    renderRivalScout();
+  } catch { rivalScout=null; }
 }
 function renderRoster(){
   $('#roster').innerHTML = (state.players || []).map(n => `<div class="player-card ${selected===n?'selected':''}" data-player="${n}"><div class="jersey">#${n}</div><div class="player-status">${state.notes[n]?'Nota guardada':'Sin nota todavía'}</div></div>`).join('');
@@ -115,7 +136,8 @@ function responseFor(prompt){
   if(text.includes('presión') || text.includes('plan') || text.includes('entren')){
     const latest=clubStats?.latestResult;
     const next=clubStats?.upcomingMatch?.opponent || state.nextOpponent || 'el próximo rival';
-    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. Diseña la sesión sobre ese contexto: 10 min de activación y comunicación; 20 min de decisiones con marcador ajustado; 15 min de rebote y balance; 10 min de tiros libres bajo presión; 5 min para cerrar con una consigna colectiva.`};
+    const rivalLine=rivalScout ? `${rivalScout.team}: ${rivalScout.matches.map(m=>`${m.for}–${m.against} ante ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}.` : `No hay scouting verificable cargado para ${next}.`;
+    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. ${rivalLine} Diseña la semana con tareas transferibles: sesión 1, balón y decisiones; sesión 2, defensa, comunicación y rebote; sesión 3, marcador ajustado, tiros libres y última posesión. No atribuyas un estilo al rival mientras falte boxscore.`};
   }
   const latest=clubStats?.latestResult;
   return {title:'Prioridades para Canterbury',body:`${clubStats?.team || 'Canterbury School'} tiene ${clubStats?.classification?.wins ?? seasonStats().wins} victorias y ${clubStats?.classification?.losses ?? Math.max(0,seasonStats().matches-seasonStats().wins)} derrotas en ${clubStats?.classification?.played ?? seasonStats().matches} partidos oficiales. ${latest ? `El último partido terminó ${latest.for}–${latest.against} ante ${latest.opponent}.` : ''} Prioridad 1: mantener la concentración en las posesiones finales. Prioridad 2: trabajar el rebote y la comunicación defensiva.`};
@@ -145,8 +167,9 @@ function download(name, content, type){ const link=document.createElement('a'); 
 function contextForChatGPT(){
   const notes=Object.entries(state.notes).map(([d,n])=>`Dorsal #${d}: ${n}`).join('\n') || 'No hay notas de jugadores.';
   const results=(state.matches||[]).map(m=>`${m.date} · ${m.opponent} · ${m.score} · ${m.read}`).join('\n');
-  const scout=clubStats ? `\nFuente de scouting: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Próximo rival: ${clubStats.upcomingMatch?.opponent}. Hay ${clubStats.documentedMatches.length} partidos con boxscore detallado. Usa solo dorsales y evita nombres.` : '';
-  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nPróximo rival: ${state.nextOpponent}\nPartidos:\n${results}\nNotas por dorsal:\n${notes}${scout}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Dame dos prioridades para el próximo entrenamiento.'}`;
+  const scout=clubStats ? `\nEQUIPO PROPIO: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Hay ${clubStats.documentedMatches.length} partidos con boxscore detallado.` : '';
+  const rival= rivalScout ? `\nRIVAL A PREPARAR: ${rivalScout.team}, ${rivalScout.competition}. Fuente: ${rivalScout.officialSource}. ${rivalScout.matches.map(m=>`${m.date} · ${m.team || rivalScout.team} ${m.for}-${m.against} ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}. Límites: ${rivalScout.limitations}` : `\nRIVAL A PREPARAR: ${state.nextOpponent}. No hay ficha verificable cargada; no inventes scouting.`;
+  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nINSTRUCCIONES DE PREPARACIÓN\n- Antes de diseñar la semana, comprueba el rival y carga su scouting separado del equipo propio.\n- No uses estadísticas de Canterbury para describir al rival.\n- Distingue datos comprobados, observaciones, hipótesis y recomendaciones.\n- Indica cobertura y límites; si falta boxscore, diseña tareas transferibles y dilo.\n- Termina con sesiones de la semana, qué observar en el partido y una comprobación de que la estrategia se entrenó.\n\nPróximo rival: ${state.nextOpponent}\nPartidos del equipo propio:\n${results}\nNotas por dorsal:\n${notes}${scout}${rival}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Prepara la estrategia de entrenamiento de esta semana.'}`;
 }
 async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch { return false; } }
 function parseCsv(text){
