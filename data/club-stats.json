@@ -18,8 +18,8 @@
     {
       "name": "Gesdeportiva FCB",
       "url": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
-      "status": "referencia externa pendiente de consulta manual",
-      "accessCheck": "La consulta automatizada recibió HTTP 403. No se han incorporado datos no verificables."
+      "status": "consulta manual verificada el 19/10/2026",
+      "accessCheck": "La consulta automatizada recibe HTTP 403; la temporada 26/27, Competición Autonómica, Cadete Femenina, Liga Regular, grupo A, el resultado y la clasificación se verificaron manualmente en la interfaz oficial."
     }
   ],
   "classification": {
