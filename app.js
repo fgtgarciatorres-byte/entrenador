@@ -12,7 +12,7 @@ const baseCourses = [
   ['⌂','6. Relación con familias','Pautas para una colaboración sana.','Habla con las familias en privado y centra la conversación en el proceso de aprendizaje.'],
   ['▣','7. Casos prácticos','Situaciones reales para entrenar mejor.','Analiza cada caso con calma y pide apoyo a coordinación si la situación supera el ámbito deportivo.']
 ];
-const defaultState = {players:[4,5,7,8,10,12,15], notes:{}, matches:demoMatches, courses:[], teamName:'Equipo infantil', nextOpponent:'CB Telde'};
+const defaultState = {players:[2,4,5,8,17,32], notes:{}, matches:demoMatches, courses:[], teamName:'Canterbury School', nextOpponent:'CB Telde', dataMode:'demo'};
 let state = loadState();
 let selected = null;
 let clubStats = null;
@@ -52,11 +52,12 @@ function renderMatches(){
 function renderClubStats(){
   if(!clubStats) return;
   const source=$('#dataSource');
-  if(source) source.textContent=`Fuente: ${clubStats.source} · ${clubStats.team} · actualizado ${clubStats.lastUpdated} · ${clubStats.documentedMatches.length} partidos con boxscore · solo dorsales en el análisis`;
+  if(source) source.textContent=`Fuente oficial y archivos locales: ${clubStats.team} · ${clubStats.competition} · actualizado ${clubStats.lastUpdated} · ${clubStats.documentedMatches.length} actas detalladas + último resultado oficial · solo dorsales en el análisis`;
   const scope=$('#trainingScope');
-  if(scope) scope.textContent=`${clubStats.documentedMatches.length} partidos detallados`;
-  if(clubStats.upcomingMatch && state.nextOpponent === defaultState.nextOpponent){
+  if(scope) scope.textContent=`${clubStats.documentedMatches.length} actas + último resultado oficial`;
+  if(clubStats.upcomingMatch && (!state.nextOpponent || state.nextOpponent === defaultState.nextOpponent || state.dataMode === 'demo')){
     state.nextOpponent=clubStats.upcomingMatch.opponent;
+    state.dataMode='official';
     save();
     renderMatches();
   }
@@ -64,7 +65,26 @@ function renderClubStats(){
   if(plans) plans.innerHTML=(clubStats.trainingPlans || []).map(plan=>`<article class="training-plan"><div class="training-plan-top"><h4>${escapeHtml(plan.title)}</h4><span>${escapeHtml(plan.duration)}</span></div><p>${escapeHtml(plan.why)}</p><ul>${plan.blocks.map(block=>`<li>${escapeHtml(block)}</li>`).join('')}</ul></article>`).join('');
 }
 async function loadClubStats(){
-  try { const response=await fetch('./data/club-stats.json'); if(!response.ok) throw new Error('stats'); clubStats=await response.json(); renderClubStats(); }
+  try {
+    const response=await fetch('./data/club-stats.json', {cache:'no-store'});
+    if(!response.ok) throw new Error('stats');
+    clubStats=await response.json();
+    const officialMatches=[
+      ...(clubStats.documentedMatches || []).map((match,index)=>({date:`Acta detallada ${index + 1}`, opponent:match.opponent, score:`${match.for}–${match.against}`, result:match.result, read:'Estadística de Canterbury importada desde la carpeta estadisticas.'})),
+      ...(clubStats.latestResult ? [{date:clubStats.latestResult.date, opponent:clubStats.latestResult.opponent, score:`${clubStats.latestResult.for}–${clubStats.latestResult.against}`, result:clubStats.latestResult.result, read:'Resultado oficial verificado en Gesdeportiva; sin boxscore detallado.'}] : [])
+    ];
+    const demoOpponents=new Set(demoMatches.map(match=>match.opponent));
+    const hasOnlyDemoMatches=(state.matches || []).length===demoMatches.length && (state.matches || []).every(match=>demoOpponents.has(match.opponent));
+    if(state.dataMode === 'demo' || hasOnlyDemoMatches){
+      state.matches=officialMatches;
+      state.dataMode='official';
+      state.teamName=clubStats.team;
+      if(clubStats.upcomingMatch) state.nextOpponent=clubStats.upcomingMatch.opponent;
+      save();
+      renderMatches();
+    }
+    renderClubStats();
+  }
   catch { const source=$('#dataSource'); if(source) source.textContent='Fuente externa no disponible. Puedes cargar un CSV de temporada.'; }
 }
 function renderRoster(){
@@ -92,8 +112,13 @@ function showCourse(index){
 function responseFor(prompt){
   const text=prompt.toLowerCase();
   if(text.includes('frustr') || text.includes('estrés') || text.includes('nerv')) return {title:'Pauta para trabajar la frustración',body:'Empieza validando la emoción: «Entiendo que te enfade». Después pide una acción concreta: respirar, mirar y volver a defender. Refuerza la respuesta al error, no solo el acierto.'};
-  if(text.includes('presión') || text.includes('plan') || text.includes('entren')) return {title:'Salida de presión: sesión de 60 minutos',body:'10 min de activación con pases bajo presión; 15 min de recepción abierta y pivote; 20 min de 3×3 con salida obligatoria; 10 min de tiros libres con rutina; 5 min de cierre.'};
-  return {title:'Prioridades para esta semana',body:`Hay ${seasonStats().matches} partidos registrados. Prioridad 1: mantener la concentración después de perder el balón. Prioridad 2: seguir trabajando el rebote ofensivo. En ambos casos usa consignas breves y refuerzo específico.`};
+  if(text.includes('presión') || text.includes('plan') || text.includes('entren')){
+    const latest=clubStats?.latestResult;
+    const next=clubStats?.upcomingMatch?.opponent || state.nextOpponent || 'el próximo rival';
+    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. Diseña la sesión sobre ese contexto: 10 min de activación y comunicación; 20 min de decisiones con marcador ajustado; 15 min de rebote y balance; 10 min de tiros libres bajo presión; 5 min para cerrar con una consigna colectiva.`};
+  }
+  const latest=clubStats?.latestResult;
+  return {title:'Prioridades para Canterbury',body:`${clubStats?.team || 'Canterbury School'} tiene ${clubStats?.classification?.wins ?? seasonStats().wins} victorias y ${clubStats?.classification?.losses ?? Math.max(0,seasonStats().matches-seasonStats().wins)} derrotas en ${clubStats?.classification?.played ?? seasonStats().matches} partidos oficiales. ${latest ? `El último partido terminó ${latest.for}–${latest.against} ante ${latest.opponent}.` : ''} Prioridad 1: mantener la concentración en las posesiones finales. Prioridad 2: trabajar el rebote y la comunicación defensiva.`};
 }
 function assistantPrompt(prompt){
   $('#promptInput').value=prompt; $('#assistantHint').textContent='Preparando recomendación…';
@@ -120,7 +145,7 @@ function download(name, content, type){ const link=document.createElement('a'); 
 function contextForChatGPT(){
   const notes=Object.entries(state.notes).map(([d,n])=>`Dorsal #${d}: ${n}`).join('\n') || 'No hay notas de jugadores.';
   const results=(state.matches||[]).map(m=>`${m.date} · ${m.opponent} · ${m.score} · ${m.read}`).join('\n');
-  const scout=clubStats ? `\nFuente de scouting: ${clubStats.team}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses}. El informe contiene ${clubStats.documentedMatches.length} partidos detallados. Usa solo dorsales y evita nombres.` : '';
+  const scout=clubStats ? `\nFuente de scouting: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Próximo rival: ${clubStats.upcomingMatch?.opponent}. Hay ${clubStats.documentedMatches.length} partidos con boxscore detallado. Usa solo dorsales y evita nombres.` : '';
   return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nPróximo rival: ${state.nextOpponent}\nPartidos:\n${results}\nNotas por dorsal:\n${notes}${scout}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Dame dos prioridades para el próximo entrenamiento.'}`;
 }
 async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch { return false; } }
@@ -148,7 +173,8 @@ $('#voiceBtn').onclick=listen; $('#voiceBtn2').onclick=listen;
 $('#closeModal').onclick=()=>$('#modal').classList.add('hidden'); $('#modal').onclick=event=>{if(event.target.id==='modal')$('#modal').classList.add('hidden');};
 $('#saveNote').onclick=()=>{if(selected){state.notes[selected]=$('#playerNote').value.trim();save();renderRoster();$('#assistantHint').textContent='Nota guardada en el dorsal #'+selected;}};
 $('#addPlayer').onclick=()=>{const number=Number(prompt('Dorsal del nuevo jugador (1–99):'));if(number>0&&number<100&&!state.players.includes(number)){state.players.push(number);state.players.sort((a,b)=>a-b);save();renderRoster();}};
-$('#resetData').onclick=()=>{state.matches=demoMatches.map(match=>({...match}));save();renderMatches();};
+$('#resetData').textContent='Restaurar datos oficiales';
+$('#resetData').onclick=()=>{state.dataMode='demo';loadClubStats();$('#assistantHint').textContent='Datos oficiales de Canterbury restaurados';};
 $('#csvInput').onchange=event=>{const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{state.matches=parseCsv(reader.result);save();renderMatches();$('#assistantHint').textContent='Partidos importados';};reader.readAsText(file);};
 $('#courseInput').onchange=event=>{const file=event.target.files[0];if(file)readCourseFile(file);};
 $('#exportData').onclick=()=>{download('cancha-copia.json',JSON.stringify(state,null,2),'application/json');$('#assistantHint').textContent='Copia guardada';};
