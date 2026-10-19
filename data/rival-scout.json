@@ -4,7 +4,8 @@
   "role": "next-opponent-scouting",
   "lastUpdated": "2026-10-19",
   "officialSource": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
-  "coverage": "resultado oficial reciente; sin boxscore detallado",
+  "sourceFile": "estadisticaPartido_19102026 (1).xlsx",
+  "coverage": "boxscore detallado de un partido",
   "matches": [
     {
       "date": "17/10/2026",
@@ -12,10 +13,33 @@
       "for": 66,
       "against": 61,
       "result": "win",
-      "dataLevel": "resultado oficial sin boxscore detallado"
+      "dataLevel": "boxscore detallado"
     }
   ],
-  "limitations": "No hay porcentajes de tiro, rebotes, pérdidas, parciales ni datos individuales verificables. No se atribuyen patrones técnicos al rival a partir de este único marcador.",
+  "teamStats": {
+    "twoMade": 21,
+    "twoAttempts": 21,
+    "twoPercentage": 100,
+    "threeMade": 4,
+    "threeAttempts": 4,
+    "threePercentage": 100,
+    "freeMade": 12,
+    "freeAttempts": 29,
+    "freePercentage": 41,
+    "rebounds": 0,
+    "assists": 0,
+    "steals": 0,
+    "turnovers": 0,
+    "fouls": 28,
+    "valuation": 21
+  },
+  "topContributors": [
+    { "dorsal": 24, "points": 23 },
+    { "dorsal": 20, "points": 14 },
+    { "dorsal": 32, "points": 14 },
+    { "dorsal": 30, "points": 9 }
+  ],
+  "limitations": "Solo hay un boxscore del rival. El archivo presenta cero en rebotes, asistencias, recuperaciones y pérdidas; se conserva como dato de origen, pero no se interpreta como ausencia real. No se atribuye un estilo estable a Santa Cruz a partir de un único partido.",
   "weekStrategy": {
     "confidence": "baja",
     "objective": "Preparar respuestas transferibles ante un rival todavía poco descrito",

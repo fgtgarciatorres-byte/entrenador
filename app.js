@@ -53,9 +53,9 @@ function renderMatches(){
 function renderClubStats(){
   if(!clubStats) return;
   const source=$('#dataSource');
-  if(source) source.textContent=`Fuente oficial y archivos locales: ${clubStats.team} · ${clubStats.competition} · actualizado ${clubStats.lastUpdated} · ${clubStats.documentedMatches.length} actas detalladas + último resultado oficial · solo dorsales en el análisis`;
+  if(source) source.textContent=`Fuente oficial y archivos locales: ${clubStats.team} · ${clubStats.competition} · actualizado ${clubStats.lastUpdated} · ${clubStats.documentedMatches.length + (clubStats.latestBoxscore ? 1 : 0)} actas detalladas · solo dorsales en el análisis`;
   const scope=$('#trainingScope');
-  if(scope) scope.textContent=`${clubStats.documentedMatches.length} actas + último resultado oficial`;
+  if(scope) scope.textContent=`${clubStats.documentedMatches.length + (clubStats.latestBoxscore ? 1 : 0)} actas con boxscore`;
   if(clubStats.upcomingMatch && (!state.nextOpponent || state.nextOpponent === defaultState.nextOpponent || state.dataMode === 'demo')){
     state.nextOpponent=clubStats.upcomingMatch.opponent;
     state.dataMode='official';
@@ -84,7 +84,7 @@ async function loadClubStats(){
     clubStats=await response.json();
     const officialMatches=[
       ...(clubStats.documentedMatches || []).map((match,index)=>({date:`Acta detallada ${index + 1}`, opponent:match.opponent, score:`${match.for}–${match.against}`, result:match.result, read:'Estadística de Canterbury importada desde la carpeta estadisticas.'})),
-      ...(clubStats.latestResult ? [{date:clubStats.latestResult.date, opponent:clubStats.latestResult.opponent, score:`${clubStats.latestResult.for}–${clubStats.latestResult.against}`, result:clubStats.latestResult.result, read:'Resultado oficial verificado en Gesdeportiva; sin boxscore detallado.'}] : [])
+      ...(clubStats.latestBoxscore ? [{date:clubStats.latestResult?.date || 'Última acta', opponent:clubStats.latestBoxscore.opponent, score:`${clubStats.latestBoxscore.for}–${clubStats.latestBoxscore.against}`, result:clubStats.latestBoxscore.result, read:'Boxscore de Canterbury importado desde la carpeta Estadisticas.'}] : clubStats.latestResult ? [{date:clubStats.latestResult.date, opponent:clubStats.latestResult.opponent, score:`${clubStats.latestResult.for}–${clubStats.latestResult.against}`, result:clubStats.latestResult.result, read:'Resultado oficial verificado en Gesdeportiva; sin boxscore detallado.'}] : [])
     ];
     const demoOpponents=new Set(demoMatches.map(match=>match.opponent));
     const hasOnlyDemoMatches=(state.matches || []).length===demoMatches.length && (state.matches || []).every(match=>demoOpponents.has(match.opponent));
@@ -120,7 +120,7 @@ function renderCourses(){
 function navigate(view){
   $$('.nav-item').forEach(nav => nav.classList.toggle('active', nav.dataset.view===view));
   $$('.view').forEach(panel => panel.classList.toggle('active', panel.id==='view-'+view));
-  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor'};
+  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor',psicologia:'Psicología deportiva, motivación y comunicación'};
   $('#pageTitle').textContent=titles[view] || titles.inicio;
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -136,11 +136,30 @@ function responseFor(prompt){
   if(text.includes('presión') || text.includes('plan') || text.includes('entren')){
     const latest=clubStats?.latestResult;
     const next=clubStats?.upcomingMatch?.opponent || state.nextOpponent || 'el próximo rival';
-    const rivalLine=rivalScout ? `${rivalScout.team}: ${rivalScout.matches.map(m=>`${m.for}–${m.against} ante ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}.` : `No hay scouting verificable cargado para ${next}.`;
-    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. ${rivalLine} Diseña la semana con tareas transferibles: sesión 1, balón y decisiones; sesión 2, defensa, comunicación y rebote; sesión 3, marcador ajustado, tiros libres y última posesión. No atribuyas un estilo al rival mientras falte boxscore.`};
+    const rivalLine=rivalScout ? `${rivalScout.team}: ${rivalScout.matches.map(m=>`${m.for}–${m.against} ante ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}. En el boxscore: ${rivalScout.teamStats.twoPercentage ?? rivalScout.teamStats.twoPercentage}% en 2P, ${rivalScout.teamStats.threePercentage ?? rivalScout.teamStats.threePercentage}% en 3P y ${rivalScout.teamStats.freePercentage}% en tiros libres. Dorsales con más puntos: ${rivalScout.topContributors.map(p=>`#${p.dorsal} (${p.points})`).join(', ')}.` : `No hay scouting verificable cargado para ${next}.`;
+    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. ${rivalLine} Diseña la semana con tareas vinculadas a los datos: eficiencia defensiva sobre los dorsales con mayor anotación, control de las situaciones de tiro del rival y rutina de tiros libres; completa con balón, comunicación, rebote y final de partido. Mantén la cautela porque solo hay un boxscore del rival.`};
   }
   const latest=clubStats?.latestResult;
   return {title:'Prioridades para Canterbury',body:`${clubStats?.team || 'Canterbury School'} tiene ${clubStats?.classification?.wins ?? seasonStats().wins} victorias y ${clubStats?.classification?.losses ?? Math.max(0,seasonStats().matches-seasonStats().wins)} derrotas en ${clubStats?.classification?.played ?? seasonStats().matches} partidos oficiales. ${latest ? `El último partido terminó ${latest.for}–${latest.against} ante ${latest.opponent}.` : ''} Prioridad 1: mantener la concentración en las posesiones finales. Prioridad 2: trabajar el rebote y la comunicación defensiva.`};
+}
+function strategyReport(){
+  const own=clubStats?.latestBoxscore?.team;
+  const rival=rivalScout?.teamStats;
+  if(!own || !rival || !rivalScout) return null;
+  const rows=[
+    ['Puntos del último boxscore', clubStats.latestBoxscore.for, rivalScout.matches[0].for],
+    ['Tiros de 2', `${own.twoMade}/${own.twoAttempts} (${own.twoPercentage}%)`, `${rival.twoMade}/${rival.twoAttempts} (${rival.twoPercentage}%)`],
+    ['Tiros de 3', `${own.threeMade}/${own.threeAttempts} (${own.threePercentage}%)`, `${rival.threeMade}/${rival.threeAttempts} (${rival.threePercentage}%)`],
+    ['Tiros libres', `${own.freeMade}/${own.freeAttempts} (${own.freePercentage}%)`, `${rival.freeMade}/${rival.freeAttempts} (${rival.freePercentage}%)`],
+    ['Faltas', own.fouls, rival.fouls],
+    ['Rebotes', `${own.rebounds}*`, `${rival.rebounds}*`],
+    ['Pérdidas', `${own.turnovers}*`, `${rival.turnovers}*`]
+  ];
+  const table=rows.map(row=>`<tr><th>${escapeHtml(row[0])}</th><td>${escapeHtml(row[1])}</td><td>${escapeHtml(row[2])}</td></tr>`).join('');
+  const ownTop=clubStats.latestBoxscore.topContributors.map(p=>`#${p.dorsal} (${p.points} puntos)`).join(', ');
+  const rivalTop=rivalScout.topContributors.map(p=>`#${p.dorsal} (${p.points} puntos)`).join(', ');
+  const sessions=(rivalScout.weekStrategy?.sessions || []).map(s=>`<li><b>${escapeHtml(s.day)} · ${escapeHtml(s.focus)}:</b> ${s.blocks.map(escapeHtml).join(' · ')}</li>`).join('');
+  return `<div class="strategy-report"><p><b>Fuente y cobertura.</b> Canterbury: ${escapeHtml(clubStats.latestBoxscore.sourceFile)}. Santa Cruz: ${escapeHtml(rivalScout.sourceFile)}. Es una comparación entre el último boxscore disponible de cada equipo, no un enfrentamiento estadístico directo.</p><table class="comparison-table"><thead><tr><th>Indicador</th><th>${escapeHtml(clubStats.team)}</th><th>${escapeHtml(rivalScout.team)}</th></tr></thead><tbody>${table}</tbody></table><p><b>Dorsales con más puntos.</b> Canterbury: ${escapeHtml(ownTop)}. Santa Cruz: ${escapeHtml(rivalTop)}.</p><p><b>Lectura para la semana.</b> Santa Cruz presenta un 100% en tiros de 2 y de 3 en esta acta, con 41% en tiros libres. Canterbury presenta 59% en tiros libres. El foco debe ser defender sin conceder tiros cómodos, cerrar el rebote y entrenar tiros libres después de esfuerzo. Los datos con asterisco aparecen como cero en los archivos y deben revisarse en el acta si se necesita una lectura completa.</p><p><b>Estrategia semanal.</b></p><ul>${sessions}</ul><p><b>Observación para el partido.</b> Registrar quién genera las primeras ventajas, cómo termina Santa Cruz sus ataques y si los dorsales #24, #20 y #32 mantienen protagonismo. Confirmar rebotes, pérdidas y recuperaciones durante el partido porque esos campos no son fiables en la hoja cargada.</p></div>`;
 }
 function assistantPrompt(prompt){
   $('#promptInput').value=prompt; $('#assistantHint').textContent='Preparando recomendación…';
@@ -148,7 +167,9 @@ function assistantPrompt(prompt){
 }
 function showResponse(prompt){
   const response=responseFor(prompt);
-  $('#modalContent').innerHTML=`<span class="eyebrow">CANCHA · RECOMENDACIÓN</span><h2>${response.title}</h2><p>${response.body}</p><p class="privacy-note">Orientación deportiva y educativa. Si aparece un problema de salud mental o seguridad, deriva a la familia y a un profesional cualificado.</p>`;
+  const wantsReport=/informe|estrateg|compar|rival|próximo|entren/.test(prompt.toLocaleLowerCase('es'));
+  const report=wantsReport ? strategyReport() : null;
+  $('#modalContent').innerHTML=report ? `<span class="eyebrow">CANCHA · INFORME DE ESTRATEGIA</span><h2>${response.title}</h2>${report}<p class="privacy-note">Informe orientativo para revisión del entrenador. La comparación usa el último boxscore disponible de cada equipo y mantiene visibles sus límites.</p>` : `<span class="eyebrow">CANCHA · RECOMENDACIÓN</span><h2>${response.title}</h2><p>${response.body}</p><p class="privacy-note">Orientación deportiva y educativa. Si aparece un problema de salud mental o seguridad, deriva a la familia y a un profesional cualificado.</p>`;
   $('#modal').classList.remove('hidden');
   return response;
 }
@@ -167,8 +188,8 @@ function download(name, content, type){ const link=document.createElement('a'); 
 function contextForChatGPT(){
   const notes=Object.entries(state.notes).map(([d,n])=>`Dorsal #${d}: ${n}`).join('\n') || 'No hay notas de jugadores.';
   const results=(state.matches||[]).map(m=>`${m.date} · ${m.opponent} · ${m.score} · ${m.read}`).join('\n');
-  const scout=clubStats ? `\nEQUIPO PROPIO: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Hay ${clubStats.documentedMatches.length} partidos con boxscore detallado.` : '';
-  const rival= rivalScout ? `\nRIVAL A PREPARAR: ${rivalScout.team}, ${rivalScout.competition}. Fuente: ${rivalScout.officialSource}. ${rivalScout.matches.map(m=>`${m.date} · ${m.team || rivalScout.team} ${m.for}-${m.against} ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}. Límites: ${rivalScout.limitations}` : `\nRIVAL A PREPARAR: ${state.nextOpponent}. No hay ficha verificable cargada; no inventes scouting.`;
+  const scout=clubStats ? `\nEQUIPO PROPIO: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Hay ${clubStats.documentedMatches.length + (clubStats.latestBoxscore ? 1 : 0)} partidos con boxscore detallado.` : '';
+  const rival= rivalScout ? `\nRIVAL A PREPARAR: ${rivalScout.team}, ${rivalScout.competition}. Fuente: ${rivalScout.officialSource}. Archivo: ${rivalScout.sourceFile}. ${rivalScout.matches.map(m=>`${m.date} · ${rivalScout.team} ${m.for}-${m.against} ${m.opponent}`).join('; ')}. Boxscore: 2P ${rivalScout.teamStats.twoPercentage}%, 3P ${rivalScout.teamStats.threePercentage}%, TL ${rivalScout.teamStats.freePercentage}%. Dorsales con más puntos: ${rivalScout.topContributors.map(p=>`#${p.dorsal} (${p.points})`).join(', ')}. Cobertura: ${rivalScout.coverage}. Límites: ${rivalScout.limitations}` : `\nRIVAL A PREPARAR: ${state.nextOpponent}. No hay ficha verificable cargada; no inventes scouting.`;
   return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nINSTRUCCIONES DE PREPARACIÓN\n- Antes de diseñar la semana, comprueba el rival y carga su scouting separado del equipo propio.\n- No uses estadísticas de Canterbury para describir al rival.\n- Distingue datos comprobados, observaciones, hipótesis y recomendaciones.\n- Indica cobertura y límites; si falta boxscore, diseña tareas transferibles y dilo.\n- Termina con sesiones de la semana, qué observar en el partido y una comprobación de que la estrategia se entrenó.\n\nPróximo rival: ${state.nextOpponent}\nPartidos del equipo propio:\n${results}\nNotas por dorsal:\n${notes}${scout}${rival}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Prepara la estrategia de entrenamiento de esta semana.'}`;
 }
 async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch { return false; } }
@@ -189,6 +210,7 @@ function readCourseFile(file){
 }
 $$('.nav-item').forEach(nav=>nav.onclick=()=>navigate(nav.dataset.view));
 $$('[data-view-target]').forEach(button=>button.onclick=()=>navigate(button.dataset.viewTarget));
+$$('[data-mobile-view]').forEach(button=>button.onclick=()=>{navigate(button.dataset.mobileView);document.querySelector('.mobile-section-menu')?.removeAttribute('open');});
 $$('[data-prompt]').forEach(button=>button.onclick=()=>assistantPrompt(button.dataset.prompt));
 $('#sendPrompt').onclick=()=>{const value=$('#promptInput').value.trim(); if(value) assistantPrompt(value);};
 $('#promptInput').onkeydown=event=>{if(event.key==='Enter')$('#sendPrompt').click();};

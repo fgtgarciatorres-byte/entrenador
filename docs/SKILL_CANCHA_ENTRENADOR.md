@@ -31,4 +31,15 @@ La respuesta debe incluir:
 - qué debe observar el entrenador en el próximo partido;
 - una comprobación final para confirmar que la estrategia se practicó antes de competir.
 
+Cuando existan boxscores de ambos equipos, mostrar además un informe comparativo con:
+
+- puntos del último partido disponible de cada equipo, indicando que no es un enfrentamiento directo;
+- tiros de dos, triples y tiros libres, con intentos, aciertos y porcentaje;
+- faltas, rebotes, asistencias, recuperaciones, pérdidas y valoración cuando estén disponibles;
+- dorsales con mayor anotación, sin mostrar nombres;
+- diferencias observables que se puedan convertir en tareas de entrenamiento;
+- campos ausentes, ceros dudosos o datos que deban comprobarse en el acta.
+
+La comparativa no debe convertir un único boxscore en un perfil estable del rival. Cada conclusión debe indicar su muestra y nivel de certeza.
+
 Las recomendaciones para menores son educativas y colectivas. No diagnosticar, no etiquetar y no convertir una señal estadística aislada en una característica permanente.
