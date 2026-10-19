@@ -39,7 +39,38 @@
     "against": 64,
     "margin": 3,
     "result": "win",
-    "dataLevel": "resultado oficial sin boxscore detallado"
+    "dataLevel": "resultado oficial con boxscore detallado"
+  },
+  "latestBoxscore": {
+    "sourceFile": "estadisticaPartido_19102026.xlsx",
+    "opponent": "Gran Canaria",
+    "for": 67,
+    "against": 64,
+    "margin": 3,
+    "result": "win",
+    "team": {
+      "twoMade": 19,
+      "twoAttempts": 19,
+      "twoPercentage": 100,
+      "threeMade": 4,
+      "threeAttempts": 4,
+      "threePercentage": 100,
+      "freeMade": 17,
+      "freeAttempts": 29,
+      "freePercentage": 59,
+      "rebounds": 0,
+      "assists": 0,
+      "steals": 0,
+      "turnovers": 0,
+      "fouls": 26,
+      "valuation": 29
+    },
+    "topContributors": [
+      { "dorsal": 2, "points": 26 },
+      { "dorsal": 13, "points": 14 },
+      { "dorsal": 4, "points": 13 }
+    ],
+    "dataNote": "El archivo presenta cero en rebotes, asistencias, recuperaciones y pérdidas; se conserva tal como aparece y no se interpreta como ausencia real de esas acciones."
   },
   "upcomingMatch": {
     "date": "24/10/2026",
