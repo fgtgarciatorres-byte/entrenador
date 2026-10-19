@@ -52,9 +52,14 @@ function renderMatches(){
 function renderClubStats(){
   if(!clubStats) return;
   const source=$('#dataSource');
-  if(source) source.textContent=`Fuente: ${clubStats.source} · ${clubStats.team} · ${clubStats.documentedMatches.length} partidos con estadísticas detalladas · solo dorsales en el análisis`;
+  if(source) source.textContent=`Fuente: ${clubStats.source} · ${clubStats.team} · actualizado ${clubStats.lastUpdated} · ${clubStats.documentedMatches.length} partidos con boxscore · solo dorsales en el análisis`;
   const scope=$('#trainingScope');
   if(scope) scope.textContent=`${clubStats.documentedMatches.length} partidos detallados`;
+  if(clubStats.upcomingMatch && state.nextOpponent === defaultState.nextOpponent){
+    state.nextOpponent=clubStats.upcomingMatch.opponent;
+    save();
+    renderMatches();
+  }
   const plans=$('#trainingPlans');
   if(plans) plans.innerHTML=(clubStats.trainingPlans || []).map(plan=>`<article class="training-plan"><div class="training-plan-top"><h4>${escapeHtml(plan.title)}</h4><span>${escapeHtml(plan.duration)}</span></div><p>${escapeHtml(plan.why)}</p><ul>${plan.blocks.map(block=>`<li>${escapeHtml(block)}</li>`).join('')}</ul></article>`).join('');
 }

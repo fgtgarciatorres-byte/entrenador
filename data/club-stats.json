@@ -11,6 +11,8 @@
   "competition": "Competición Autonómica FCB 26/27",
   "team": "Canterbury School",
   "scope": "scouting-oponente",
+  "lastUpdated": "2026-10-19",
+  "officialSource": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
   "note": "La carpeta analizada contiene clasificación y estadísticas de Canterbury School y sus rivales. Se usa como referencia de preparación, no como registro del equipo Santa Brígida.",
   "externalSources": [
     {
@@ -22,11 +24,28 @@
   ],
   "classification": {
     "rank": 2,
-    "played": 3,
-    "wins": 3,
+    "played": 5,
+    "wins": 5,
     "losses": 0,
-    "points": 6,
+    "points": 10,
+    "pointsFor": 360,
+    "pointsAgainst": 201,
     "winRate": 1
+  },
+  "latestResult": {
+    "date": "15/10/2026",
+    "opponent": "Gran Canaria",
+    "for": 67,
+    "against": 64,
+    "margin": 3,
+    "result": "win",
+    "dataLevel": "resultado oficial sin boxscore detallado"
+  },
+  "upcomingMatch": {
+    "date": "24/10/2026",
+    "opponent": "Santa Cruz",
+    "venue": "Pabellón Canterbury School",
+    "status": "programado"
   },
   "documentedMatches": [
     {
@@ -114,6 +133,12 @@
       "duration": "10 min",
       "why": "La ventaja media documentada es de 26,5 puntos. Conviene entrenar concentración y comunicación cuando el partido se aprieta.",
       "blocks": ["Juego reducido con objetivo de comunicación", "Cada jugador nombra una ayuda útil de un compañero", "Mensaje final centrado en esfuerzo y decisión"]
+    },
+    {
+      "title": "Resolver los últimos tres minutos",
+      "duration": "15 min",
+      "why": "La última victoria fue 67–64 ante Gran Canaria. El próximo bloque debe entrenar decisiones, comunicación y tiros libres con marcador ajustado.",
+      "blocks": ["5x5 desde 64–64 con tres minutos de reloj", "Una posesión para atacar y una para defender tras cada pausa", "Cierre con tiro libre, balance y mensaje breve de confianza"]
     }
   ]
 }

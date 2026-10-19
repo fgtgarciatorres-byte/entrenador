@@ -1,4 +1,4 @@
-const CACHE_NAME='cancha-v4';
+const CACHE_NAME='cancha-v5';
 const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.json','./bsb-logo.png','./data/club-stats.json'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
