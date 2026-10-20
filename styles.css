@@ -25,3 +25,12 @@
   .mobile-section-links button{background:#f4f6ef;color:var(--green);border-radius:10px;text-align:left;padding:11px 12px;font-size:12px;font-weight:600}
   .mobile-section-links button:active{background:var(--lime)}
 }
+.mobile-icon{display:inline-grid;place-items:center;width:27px;height:27px;margin-right:8px;border-radius:9px;background:#e4edda;color:var(--green);font-size:16px;line-height:1;vertical-align:middle}
+.mobile-section-links button{display:flex;align-items:center;min-height:46px;border:1px solid #e0e8da;transition:background .15s ease,transform .15s ease}
+.mobile-section-links button:hover{background:#eaf2df;transform:translateY(-1px)}
+.report-button{display:block;width:100%;margin-top:11px}
+.report-panel{min-height:180px}
+.report-panel .strategy-report{max-height:none;overflow:visible}
+.report-panel .strategy-report p{line-height:1.55}
+.empty-state{color:var(--muted);padding:12px 0}
+@media(max-width:570px){.report-panel{padding:15px}.comparison-table{font-size:10px}.comparison-table th,.comparison-table td{padding:8px 5px}.report-panel .strategy-report{overflow-x:auto}.report-panel .comparison-table{min-width:460px}}

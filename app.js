@@ -106,7 +106,14 @@ async function loadClubStats(){
     const expected=clubStats?.upcomingMatch?.opponent || state.nextOpponent;
     if(rivalScout.team !== expected) rivalScout=null;
     renderRivalScout();
-  } catch { rivalScout=null; }
+    renderStrategyReportView();
+  } catch { rivalScout=null; renderStrategyReportView(); }
+}
+function renderStrategyReportView(){
+  const panel=$('#strategyReportPanel');
+  if(!panel) return;
+  const report=strategyReport();
+  panel.innerHTML=report || '<p class="empty-state">Cancha está cargando el informe o no tiene todavía un boxscore emparejado del rival.</p>';
 }
 function renderRoster(){
   $('#roster').innerHTML = (state.players || []).map(n => `<div class="player-card ${selected===n?'selected':''}" data-player="${n}"><div class="jersey">#${n}</div><div class="player-status">${state.notes[n]?'Nota guardada':'Sin nota todavía'}</div></div>`).join('');
@@ -120,7 +127,7 @@ function renderCourses(){
 function navigate(view){
   $$('.nav-item').forEach(nav => nav.classList.toggle('active', nav.dataset.view===view));
   $$('.view').forEach(panel => panel.classList.toggle('active', panel.id==='view-'+view));
-  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor',psicologia:'Psicología deportiva, motivación y comunicación'};
+  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor',informes:'Rival y estrategia semanal',psicologia:'Psicología deportiva, motivación y comunicación'};
   $('#pageTitle').textContent=titles[view] || titles.inicio;
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -215,6 +222,8 @@ $$('[data-prompt]').forEach(button=>button.onclick=()=>assistantPrompt(button.da
 $('#sendPrompt').onclick=()=>{const value=$('#promptInput').value.trim(); if(value) assistantPrompt(value);};
 $('#promptInput').onkeydown=event=>{if(event.key==='Enter')$('#sendPrompt').click();};
 $('#voiceBtn').onclick=listen; $('#voiceBtn2').onclick=listen;
+$('#openStrategyReport')?.addEventListener('click',()=>{navigate('informes');renderStrategyReportView();});
+$('#refreshStrategyReport')?.addEventListener('click',renderStrategyReportView);
 $('#closeModal').onclick=()=>$('#modal').classList.add('hidden'); $('#modal').onclick=event=>{if(event.target.id==='modal')$('#modal').classList.add('hidden');};
 $('#saveNote').onclick=()=>{if(selected){state.notes[selected]=$('#playerNote').value.trim();save();renderRoster();$('#assistantHint').textContent='Nota guardada en el dorsal #'+selected;}};
 $('#addPlayer').onclick=()=>{const number=Number(prompt('Dorsal del nuevo jugador (1–99):'));if(number>0&&number<100&&!state.players.includes(number)){state.players.push(number);state.players.sort((a,b)=>a-b);save();renderRoster();}};
