@@ -1,0 +1,11 @@
+{
+  "status": "PASSED",
+  "checkedAt": "2026-10-20T22:01:16.358Z",
+  "checks": {
+    "cards": 6,
+    "sources": 6,
+    "rival": "Santa Cruz",
+    "team": "Canterbury School"
+  },
+  "errors": []
+}

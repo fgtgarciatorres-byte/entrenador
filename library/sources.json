@@ -1,0 +1,12 @@
+{
+  "updatedAt": "2026-10-20",
+  "policy": "Cancha conserva metadatos, enlaces y resúmenes de uso. No redistribuye textos completos protegidos por derechos de autor.",
+  "sources": [
+    {"id":"fiba-wabc-coaches-manual","title":"WABC Coaches Manual","publisher":"FIBA / World Association of Basketball Coaches","url":"https://assets.fiba.basketball/image/upload/documents-corporate-wabc-coaches-manual-eng.pdf","accessedAt":"2026-10-20","licenseNote":"Recurso oficial; consultar condiciones antes de redistribuir el PDF.","use":"Planificación de sesiones, enseñanza por edades, comunicación y revisión."},
+    {"id":"fiba-start-coaching","title":"Start Coaching","publisher":"FIBA / WABC","url":"https://www.fiba.basketball/en/news/fiba-and-wabc-release-new-grassroots-coaching-resource-start-coaching","accessedAt":"2026-10-20","licenseNote":"Usar el recurso desde su página oficial.","use":"Prácticas para iniciación, planificación básica y entrenamiento de base."},
+    {"id":"who-adolescent-mental-health","title":"Mental health of adolescents","publisher":"World Health Organization","url":"https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health","accessedAt":"2026-10-20","licenseNote":"Fuente institucional; comprobar la versión vigente.","use":"Límites de la orientación, bienestar, apoyo social y derivación."},
+    {"id":"apa-coach-effectiveness","title":"Coach Effectiveness Training","publisher":"American Psychological Association","url":"https://www.apa.org/topics/sport-rehabilitation/coaching-coaches","accessedAt":"2026-10-20","licenseNote":"Resumen de una intervención evaluada; no sustituye formación profesional.","use":"Feedback, clima motivacional y relación entrenador-jugadora."},
+    {"id":"ioc-harassment-abuse-sport","title":"Consensus statement on harassment and abuse in sport","publisher":"International Olympic Committee","url":"https://img.olympics.com/images/image/private/fl_attachment/primary/es6bp4rs55dzrzahqxmm.pdf","accessedAt":"2026-10-20","licenseNote":"Fuente de protección; aplicar junto al protocolo del club.","use":"Señales de riesgo, buen trato y escalado."},
+    {"id":"fcb-canarias-official","title":"Federación Canaria de Baloncesto","publisher":"FCB / Gesdeportiva","url":"https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria","accessedAt":"2026-10-20","licenseNote":"Fuente de competición; conservar fecha y alcance.","use":"Categoría, competición, calendario, resultados y clasificación."}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "Biblioteca Cancha",
+  "description": "Fichas breves y revisables para preparar sesiones, partidos y conversaciones con equipos infantiles.",
+  "updatedAt": "2026-10-20",
+  "cards": [
+    {"id":"practice-plan-01","title":"Diseñar una sesión con objetivo observable","category":"planificacion","ages":["preinfantil","infantil","cadete"],"summary":"Define una conducta concreta, distribuye el tiempo y cierra con una comprobación.","coachAction":"Escribe el objetivo en una frase, prepara una progresión y observa una señal concreta al final.","sourceIds":["fiba-wabc-coaches-manual","fiba-start-coaching"],"tags":["sesion","progresion","evaluacion"]},
+    {"id":"practice-review-01","title":"Revisar el entrenamiento sin etiquetar","category":"evaluacion","ages":["preinfantil","infantil","cadete"],"summary":"Registra qué se practicó, qué apareció y qué debe repetirse.","coachAction":"Anota hecho observable, respuesta del equipo, ajuste para la próxima sesión y fecha de revisión.","sourceIds":["fiba-wabc-coaches-manual"],"tags":["revision","observacion","aprendizaje"]},
+    {"id":"feedback-effort-01","title":"Feedback que refuerza aprendizaje","category":"psicologia","ages":["preinfantil","infantil","cadete"],"summary":"Describe la acción, reconoce el esfuerzo útil y propone el siguiente intento.","coachAction":"Usa la secuencia: qué vi, qué ayudó y qué vamos a probar ahora.","sourceIds":["apa-coach-effectiveness","who-adolescent-mental-health"],"tags":["feedback","motivacion","comunicacion"]},
+    {"id":"stress-reset-01","title":"Rutina breve después del error","category":"psicologia","ages":["infantil","cadete"],"summary":"Ayuda a volver a la tarea sin convertir el error en una etiqueta.","coachAction":"Normaliza el fallo, usa una respiración lenta y pide una acción defensiva o de apoyo concreta.","sourceIds":["who-adolescent-mental-health","fiba-wabc-coaches-manual"],"tags":["estres","error","atencion"]},
+    {"id":"safeguarding-escalation-01","title":"Cuando una señal requiere protección","category":"proteccion","ages":["preinfantil","infantil","cadete"],"summary":"Distingue una dificultad deportiva de una posible situación de riesgo.","coachAction":"Detén la interpretación deportiva, registra hechos sin diagnóstico y activa el protocolo del club.","sourceIds":["ioc-harassment-abuse-sport","who-adolescent-mental-health"],"tags":["buen-trato","seguridad","derivacion"]},
+    {"id":"data-quality-01","title":"Leer un boxscore con cautela","category":"datos","ages":["preinfantil","infantil","cadete"],"summary":"Comprueba equipo, competición, fecha, muestra y campos ausentes antes de recomendar.","coachAction":"Separa dato, observación e hipótesis; no conviertas un cero no registrado en una ausencia real.","sourceIds":["fcb-canarias-official"],"tags":["scouting","fuentes","calidad"]}
+  ]
+}

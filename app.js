@@ -17,6 +17,7 @@ let state = loadState();
 let selected = null;
 let clubStats = null;
 let rivalScout = null;
+let libraryCatalog = null;
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -125,6 +126,31 @@ function renderCourses(){
   // Solo los botones generados por la biblioteca abren un capítulo.
   // Las tarjetas de psicología usan data-prompt y deben conservar su consulta.
   $$('.course-card button[data-course]').forEach(button => button.onclick = () => showCourse(Number(button.dataset.course)));
+}
+function renderLibrary(){
+  const grid=$('#libraryGrid');
+  const status=$('#libraryStatus');
+  if(!grid || !libraryCatalog) return;
+  grid.innerHTML=(libraryCatalog.cards || []).map(card=>`<article class="course-card library-card"><div class="course-icon">✦</div><span class="eyebrow">${escapeHtml(card.category)} · ${escapeHtml(card.ages.join(', '))}</span><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.summary)}</p><button class="library-consult" data-library-id="${escapeHtml(card.id)}">Aplicar en el entreno →</button></article>`).join('');
+  $$('.library-consult').forEach(button=>button.onclick=()=>{
+    const card=libraryCatalog.cards.find(item=>item.id===button.dataset.libraryId);
+    if(card) assistantPrompt(`${card.title}. ${card.coachAction}`);
+  });
+  if(status){ status.textContent=`${libraryCatalog.cards.length} fichas · validador pendiente de ejecutar`; status.classList.remove('library-ok'); }
+}
+async function loadLibrary(){
+  try{
+    const response=await fetch('./library/catalog.json',{cache:'no-store'});
+    if(!response.ok) throw new Error('library');
+    libraryCatalog=await response.json();
+    renderLibrary();
+    const report=await fetch('./library/validation-report.json',{cache:'no-store'});
+    if(report.ok){
+      const validation=await report.json();
+      const status=$('#libraryStatus');
+      if(status){ status.textContent=validation.status==='PASSED' ? `Validada · ${validation.checks.cards} fichas · ${validation.checks.sources} fuentes` : 'Revisión pendiente'; status.classList.toggle('library-ok',validation.status==='PASSED'); }
+    }
+  }catch{ const status=$('#libraryStatus'); if(status) status.textContent='Biblioteca no disponible'; }
 }
 function navigate(view){
   $$('.nav-item').forEach(nav => nav.classList.toggle('active', nav.dataset.view===view));
@@ -242,4 +268,4 @@ let deferredInstallPrompt;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;$('#installBtn').hidden=false;});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{$('#assistantHint').textContent='En iPhone: Compartir → Añadir a pantalla de inicio';}};
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-renderMatches(); renderRoster(); renderCourses(); loadClubStats();
+renderMatches(); renderRoster(); renderCourses(); loadClubStats(); loadLibrary();

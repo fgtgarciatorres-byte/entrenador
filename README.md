@@ -16,6 +16,9 @@ Piloto local para un club de baloncesto infantil. Se abre directamente con `inde
 - Exportación e importación de una copia local en JSON.
 - PWA instalable en móvil con `manifest.json` y `sw.js`.
 - Logo oficial BSB integrado en la aplicación.
+- Biblioteca validada con fichas de planificación, revisión, feedback, estrés, protección y calidad de datos.
+- Registro de fuentes oficiales FIBA/WABC, OMS, APA, IOC y FCB con enlace, fecha y límites de reutilización.
+- Informe de validación generado en `library/validation-report.json`.
 
 ## Ejecutar
 
@@ -25,6 +28,16 @@ python -m http.server 4173
 ```
 
 Abrir `http://localhost:4173`.
+
+## Validación de calidad
+
+Desde la raíz del repositorio:
+
+```powershell
+node tools/validate-cancha.mjs
+```
+
+El validador comprueba la estructura de la biblioteca, las fuentes, la identidad del equipo y del rival, la compatibilidad de competición, la integración en la interfaz, la caché PWA y la sintaxis de `app.js`. Solo un resultado `PASSED` permite integrar la biblioteca en la versión publicada.
 
 ## Instalar en el teléfono
 
