@@ -34,4 +34,5 @@
 .report-panel .strategy-report p{line-height:1.55}
 .empty-state{color:var(--muted);padding:12px 0}
 .library-panel{margin-top:17px}.library-grid{margin-top:14px;grid-template-columns:repeat(3,1fr)}.library-card{min-height:210px}.library-card .eyebrow{font-size:9px;margin-bottom:9px}.library-card h3{margin-top:0}.library-card button{color:var(--green)}.library-ok{background:#e4f2df;color:#3e793f}
+.shared-insight{padding:11px 0;border-bottom:1px solid var(--line)}.shared-insight:last-child{border-bottom:0}.shared-insight b{font:600 14px 'Space Grotesk';color:var(--green)}.shared-insight p{margin:5px 0 0;font-size:12px}.governance-list{margin:13px 0 0;padding-left:20px;color:#64706e;font-size:12px;line-height:1.8}
 @media(max-width:570px){.report-panel{padding:15px}.comparison-table{font-size:10px}.comparison-table th,.comparison-table td{padding:8px 5px}.report-panel .strategy-report{overflow-x:auto}.report-panel .comparison-table{min-width:460px}}

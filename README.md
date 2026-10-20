@@ -19,6 +19,8 @@ Piloto local para un club de baloncesto infantil. Se abre directamente con `inde
 - Biblioteca validada con fichas de planificación, revisión, feedback, estrés, protección y calidad de datos.
 - Registro de fuentes oficiales FIBA/WABC, OMS, APA, IOC y FCB con enlace, fecha y límites de reutilización.
 - Informe de validación generado en `library/validation-report.json`.
+- Vistas piloto de agente club asesor y agente club organizador, con datos agregados separados de las notas del entrenador.
+- Borrador local de sesión para convertir experiencias en aprendizaje compartible tras revisión.
 
 ## Ejecutar
 
@@ -38,6 +40,8 @@ node tools/validate-cancha.mjs
 ```
 
 El validador comprueba la estructura de la biblioteca, las fuentes, la identidad del equipo y del rival, la compatibilidad de competición, la integración en la interfaz, la caché PWA y la sintaxis de `app.js`. Solo un resultado `PASSED` permite integrar la biblioteca en la versión publicada.
+
+El piloto no presenta todavía autenticación multiusuario ni permisos de servidor. Las vistas del club muestran el modelo de separación y permanecen sin indicadores compartidos hasta que un entrenador autorice una síntesis colectiva.
 
 ## Instalar en el teléfono
 

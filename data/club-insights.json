@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "scope": "club-aggregate",
+  "status": "ready-for-authorized-import",
+  "privacy": "Solo indicadores colectivos y prácticas compartibles. No contiene nombres, dorsales ni notas individuales.",
+  "lastUpdated": "2026-10-20",
+  "teamInsights": [],
+  "sharedPractices": [],
+  "pendingImports": ["Parte de sesión validado por cada entrenador", "Indicador colectivo y fecha de revisión", "Autorización para compartir con el agente club asesor"],
+  "organizerPolicy": {"canRead":["indicadores agregados","necesidades formativas","prácticas compartidas"],"cannotRead":["notas individuales","nombres","dorsales","diagnósticos","conversaciones privadas"],"decisionRule":"El agente organizador asesora a la dirección; no ordena cambios ni contacta con entrenadores."}
+}

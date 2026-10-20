@@ -18,6 +18,7 @@ let selected = null;
 let clubStats = null;
 let rivalScout = null;
 let libraryCatalog = null;
+let clubInsights = null;
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -152,10 +153,34 @@ async function loadLibrary(){
     }
   }catch{ const status=$('#libraryStatus'); if(status) status.textContent='Biblioteca no disponible'; }
 }
+function renderClubGovernance(){
+  if(!clubInsights) return;
+  const status=$('#clubAdvisorStatus');
+  if(status) status.textContent=clubInsights.status==='ready-for-authorized-import'?'Listo para importación autorizada':'Revisión requerida';
+  const insights=$('#clubInsights');
+  if(insights){
+    const items=[...(clubInsights.teamInsights||[]),...(clubInsights.sharedPractices||[])];
+    insights.innerHTML=items.length ? items.map(item=>`<article class="shared-insight"><b>${escapeHtml(item.title || item.need || 'Práctica compartida')}</b><p>${escapeHtml(item.summary || item.action || '')}</p></article>`).join('') : '<p class="empty-state">No hay indicadores colectivos autorizados todavía. El agente asesor no inventa necesidades del club.</p>';
+  }
+  const teamCount=$('#sharedTeamCount');
+  const needCount=$('#openNeedCount');
+  const practiceCount=$('#sharedPracticeCount');
+  if(teamCount) teamCount.textContent=new Set((clubInsights.teamInsights||[]).map(item=>item.team).filter(Boolean)).size;
+  if(needCount) needCount.textContent=(clubInsights.teamInsights||[]).length;
+  if(practiceCount) practiceCount.textContent=(clubInsights.sharedPractices||[]).length;
+}
+async function loadClubInsights(){
+  try{
+    const response=await fetch('./data/club-insights.json',{cache:'no-store'});
+    if(!response.ok) throw new Error('club-insights');
+    clubInsights=await response.json();
+    renderClubGovernance();
+  }catch{ const status=$('#clubAdvisorStatus'); if(status) status.textContent='Datos compartidos no disponibles'; }
+}
 function navigate(view){
   $$('.nav-item').forEach(nav => nav.classList.toggle('active', nav.dataset.view===view));
   $$('.view').forEach(panel => panel.classList.toggle('active', panel.id==='view-'+view));
-  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor',informes:'Rival y estrategia semanal',psicologia:'Psicología deportiva, motivación y comunicación'};
+  const titles={inicio:'Buenos días, entrenador/a',equipo:'Tu equipo, dorsal a dorsal',analisis:'Cómo está evolucionando el equipo',formacion:'Aprender para entrenar mejor',informes:'Rival y estrategia semanal',club:'Agente club asesor',direccion:'Agente club organizador',psicologia:'Psicología deportiva, motivación y comunicación'};
   $('#pageTitle').textContent=titles[view] || titles.inicio;
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -172,10 +197,18 @@ function responseFor(prompt){
     const latest=clubStats?.latestResult;
     const next=clubStats?.upcomingMatch?.opponent || state.nextOpponent || 'el próximo rival';
     const rivalLine=rivalScout ? `${rivalScout.team}: ${rivalScout.matches.map(m=>`${m.for}–${m.against} ante ${m.opponent}`).join('; ')}. Cobertura: ${rivalScout.coverage}. En el boxscore: ${rivalScout.teamStats.twoPercentage ?? rivalScout.teamStats.twoPercentage}% en 2P, ${rivalScout.teamStats.threePercentage ?? rivalScout.teamStats.threePercentage}% en 3P y ${rivalScout.teamStats.freePercentage}% en tiros libres. Dorsales con más puntos: ${rivalScout.topContributors.map(p=>`#${p.dorsal} (${p.points})`).join(', ')}.` : `No hay scouting verificable cargado para ${next}.`;
-    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. ${rivalLine} Diseña la semana con tareas vinculadas a los datos: eficiencia defensiva sobre los dorsales con mayor anotación, control de las situaciones de tiro del rival y rutina de tiros libres; completa con balón, comunicación, rebote y final de partido. Mantén la cautela porque solo hay un boxscore del rival.`};
+    const libraryAdvice=libraryGuidance(prompt);
+    return {title:`Preparación Canterbury · ${next}`,body:`Canterbury llega con ${clubStats?.classification?.wins ?? seasonStats().wins} victorias en ${clubStats?.classification?.played ?? seasonStats().matches} partidos. El último resultado fue ${latest ? `${latest.for}–${latest.against} ante ${latest.opponent}` : 'el partido más reciente disponible'}. ${rivalLine} Diseña la semana con tareas vinculadas a los datos: eficiencia defensiva sobre los dorsales con mayor anotación, control de las situaciones de tiro del rival y rutina de tiros libres; completa con balón, comunicación, rebote y final de partido. ${libraryAdvice} Mantén la cautela porque solo hay un boxscore del rival.`};
   }
   const latest=clubStats?.latestResult;
   return {title:'Prioridades para Canterbury',body:`${clubStats?.team || 'Canterbury School'} tiene ${clubStats?.classification?.wins ?? seasonStats().wins} victorias y ${clubStats?.classification?.losses ?? Math.max(0,seasonStats().matches-seasonStats().wins)} derrotas en ${clubStats?.classification?.played ?? seasonStats().matches} partidos oficiales. ${latest ? `El último partido terminó ${latest.for}–${latest.against} ante ${latest.opponent}.` : ''} Prioridad 1: mantener la concentración en las posesiones finales. Prioridad 2: trabajar el rebote y la comunicación defensiva.`};
+}
+function libraryGuidance(prompt){
+  if(!libraryCatalog?.cards?.length) return 'La biblioteca todavía no está cargada; usa fundamentos transferibles y dilo.';
+  const words=prompt.toLowerCase().split(/\W+/).filter(word=>word.length>3);
+  const matches=libraryCatalog.cards.filter(card=>[card.title,card.summary,...card.tags].join(' ').toLowerCase().split(/\W+/).some(word=>words.includes(word))).slice(0,2);
+  const cards=matches.length ? matches : libraryCatalog.cards.filter(card=>card.category==='planificacion').slice(0,1);
+  return `Biblioteca aplicada: ${cards.map(card=>`${card.title}: ${card.coachAction}`).join(' ')} Fuente y límites visibles en Formación.`;
 }
 function strategyReport(){
   const own=clubStats?.latestBoxscore?.team;
@@ -225,7 +258,8 @@ function contextForChatGPT(){
   const results=(state.matches||[]).map(m=>`${m.date} · ${m.opponent} · ${m.score} · ${m.read}`).join('\n');
   const scout=clubStats ? `\nEQUIPO PROPIO: ${clubStats.team}, ${clubStats.competition}. Clasificación: ${clubStats.classification.rank}º con ${clubStats.classification.wins}-${clubStats.classification.losses} en ${clubStats.classification.played} partidos. Último resultado oficial: ${clubStats.latestResult?.for}-${clubStats.latestResult?.against} ante ${clubStats.latestResult?.opponent}. Hay ${clubStats.documentedMatches.length + (clubStats.latestBoxscore ? 1 : 0)} partidos con boxscore detallado.` : '';
   const rival= rivalScout ? `\nRIVAL A PREPARAR: ${rivalScout.team}, ${rivalScout.competition}. Fuente: ${rivalScout.officialSource}. Archivo: ${rivalScout.sourceFile}. ${rivalScout.matches.map(m=>`${m.date} · ${rivalScout.team} ${m.for}-${m.against} ${m.opponent}`).join('; ')}. Boxscore: 2P ${rivalScout.teamStats.twoPercentage}%, 3P ${rivalScout.teamStats.threePercentage}%, TL ${rivalScout.teamStats.freePercentage}%. Dorsales con más puntos: ${rivalScout.topContributors.map(p=>`#${p.dorsal} (${p.points})`).join(', ')}. Cobertura: ${rivalScout.coverage}. Límites: ${rivalScout.limitations}` : `\nRIVAL A PREPARAR: ${state.nextOpponent}. No hay ficha verificable cargada; no inventes scouting.`;
-  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nINSTRUCCIONES DE PREPARACIÓN\n- Antes de diseñar la semana, comprueba el rival y carga su scouting separado del equipo propio.\n- No uses estadísticas de Canterbury para describir al rival.\n- Distingue datos comprobados, observaciones, hipótesis y recomendaciones.\n- Indica cobertura y límites; si falta boxscore, diseña tareas transferibles y dilo.\n- Termina con sesiones de la semana, qué observar en el partido y una comprobación de que la estrategia se entrenó.\n\nPróximo rival: ${state.nextOpponent}\nPartidos del equipo propio:\n${results}\nNotas por dorsal:\n${notes}${scout}${rival}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Prepara la estrategia de entrenamiento de esta semana.'}`;
+  const library=libraryCatalog?.cards?.map(card=>`${card.title}: ${card.coachAction}`).join('\n') || 'Biblioteca no cargada.';
+  return `Modo entrenador. Club Santa Brígida. Responde en español, con pautas breves y prácticas para baloncesto infantil. Prioriza motivación, gestión del estrés, dinámicas de grupo y aprendizaje. No hagas intervención clínica.\n\nINSTRUCCIONES DE PREPARACIÓN\n- Antes de diseñar la semana, comprueba el rival y carga su scouting separado del equipo propio.\n- No uses estadísticas de Canterbury para describir al rival.\n- Distingue datos comprobados, observaciones, hipótesis y recomendaciones.\n- Indica cobertura y límites; si falta boxscore, diseña tareas transferibles y dilo.\n- Termina con sesiones de la semana, qué observar en el partido y una comprobación de que la estrategia se entrenó.\n\nBIBLIOTECA DISPONIBLE:\n${library}\n\nROLES DEL CLUB:\n- Agente entrenador: ayuda al entrenador y conserva sus notas locales.\n- Agente club asesor: recibe solo prácticas e indicadores colectivos autorizados.\n- Agente organizador: asesora exclusivamente a la dirección y no recibe notas individuales.\n\nPróximo rival: ${state.nextOpponent}\nPartidos del equipo propio:\n${results}\nNotas por dorsal:\n${notes}${scout}${rival}\n\nConsulta del entrenador: ${$('#promptInput').value || 'Prepara la estrategia de entrenamiento de esta semana.'}`;
 }
 async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch { return false; } }
 function parseCsv(text){
@@ -252,6 +286,11 @@ $('#promptInput').onkeydown=event=>{if(event.key==='Enter')$('#sendPrompt').clic
 $('#voiceBtn').onclick=listen; $('#voiceBtn2').onclick=listen;
 $('#openStrategyReport')?.addEventListener('click',()=>{navigate('informes');renderStrategyReportView();});
 $('#refreshStrategyReport')?.addEventListener('click',renderStrategyReportView);
+$('#newSessionNote')?.addEventListener('click',()=>{
+  const note={date:new Date().toISOString().slice(0,10),title:'Borrador de sesión',type:'entrenamiento',fact:'',action:'',reviewDate:''};
+  download('cancha-borrador-sesion.json',JSON.stringify(note,null,2),'application/json');
+  $('#assistantHint').textContent='Borrador de sesión descargado';
+});
 $('#closeModal').onclick=()=>$('#modal').classList.add('hidden'); $('#modal').onclick=event=>{if(event.target.id==='modal')$('#modal').classList.add('hidden');};
 $('#saveNote').onclick=()=>{if(selected){state.notes[selected]=$('#playerNote').value.trim();save();renderRoster();$('#assistantHint').textContent='Nota guardada en el dorsal #'+selected;}};
 $('#addPlayer').onclick=()=>{const number=Number(prompt('Dorsal del nuevo jugador (1–99):'));if(number>0&&number<100&&!state.players.includes(number)){state.players.push(number);state.players.sort((a,b)=>a-b);save();renderRoster();}};
@@ -268,4 +307,4 @@ let deferredInstallPrompt;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;$('#installBtn').hidden=false;});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{$('#assistantHint').textContent='En iPhone: Compartir → Añadir a pantalla de inicio';}};
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-renderMatches(); renderRoster(); renderCourses(); loadClubStats(); loadLibrary();
+renderMatches(); renderRoster(); renderCourses(); loadClubStats(); loadLibrary(); loadClubInsights();

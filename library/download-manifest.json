@@ -1,0 +1,12 @@
+{
+  "updatedAt": "2026-10-20",
+  "policy": "Se conservan enlaces y fichas de uso. Los documentos completos solo se descargan y redistribuyen cuando su licencia lo permite.",
+  "sources": [
+    {"id":"fiba-wabc-coaches-manual","retrieval":"remote-official-link","downloaded":false,"reason":"Licencia de redistribución local no verificada."},
+    {"id":"fiba-start-coaching","retrieval":"remote-official-link","downloaded":false,"reason":"Se integra mediante metadatos y fichas."},
+    {"id":"who-adolescent-mental-health","retrieval":"remote-official-link","downloaded":false,"reason":"Se conserva la referencia institucional y el resumen."},
+    {"id":"apa-coach-effectiveness","retrieval":"remote-official-link","downloaded":false,"reason":"Se conserva el resumen y la atribución."},
+    {"id":"ioc-harassment-abuse-sport","retrieval":"remote-official-link","downloaded":false,"reason":"Revisar licencia antes de archivar el PDF."},
+    {"id":"fcb-canarias-official","retrieval":"manual-official-reference","downloaded":false,"reason":"La fuente federativa requiere consulta manual y puede devolver HTTP 403."}
+  ]
+}
