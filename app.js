@@ -122,7 +122,9 @@ function renderRoster(){
 function selectPlayer(n){ selected=n; $('#selectedPlayer').textContent=`Dorsal #${n}`; $('#playerNote').value=state.notes[n] || ''; renderRoster(); }
 function renderCourses(){
   $('#courseGrid').innerHTML = allCourses().map((course,i) => `<article class="course-card"><div class="course-icon">${escapeHtml(course[0] || '▤')}</div><h3>${escapeHtml(course[1])}</h3><p>${escapeHtml(course[2])}</p><button data-course="${i}">${i<2?'Continuar capítulo':'Abrir capítulo'} →</button></article>`).join('');
-  $$('.course-card button').forEach(button => button.onclick = () => showCourse(Number(button.dataset.course)));
+  // Solo los botones generados por la biblioteca abren un capítulo.
+  // Las tarjetas de psicología usan data-prompt y deben conservar su consulta.
+  $$('.course-card button[data-course]').forEach(button => button.onclick = () => showCourse(Number(button.dataset.course)));
 }
 function navigate(view){
   $$('.nav-item').forEach(nav => nav.classList.toggle('active', nav.dataset.view===view));
