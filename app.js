@@ -154,5 +154,10 @@ $('#editCoach').onclick=()=>{const name=prompt('Nombre visible del entrenador:',
 let deferredInstallPrompt;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;$('#installBtn').hidden=false;});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{$('#assistantHint').textContent='En iPhone: Compartir → Añadir a pantalla de inicio';}};
-if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+// Cancha lee datos vivos al arrancar. Retiramos registros antiguos que podían
+// devolver club-stats.json o el scouting del rival desde una caché obsoleta.
+if('serviceWorker' in navigator) window.addEventListener('load',async()=>{
+  try{ const registrations=await navigator.serviceWorker.getRegistrations(); await Promise.all(registrations.map(registration=>registration.unregister())); }
+  catch{}
+});
 renderMatches(); renderRoster(); renderCourses(); loadClubStats();
