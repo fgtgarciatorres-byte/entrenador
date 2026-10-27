@@ -96,7 +96,7 @@
   }
   async function loadPilotData(){
     try {
-      const response = await fetch('./data/club-stats.json?refresh=20261030', {cache:'no-store'});
+      const response = await fetch('./data/club-stats.json?refresh=20261038', {cache:'no-store'});
       if (!response.ok) throw new Error('No se pudo leer el archivo local');
       pilot = await response.json();
       app.team = pilot.team || blankState.team;
