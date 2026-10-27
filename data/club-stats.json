@@ -5,11 +5,12 @@
     "clasificacion_05102026.xlsx",
     "estadisticaPartido_05102026.xlsx",
     "estadisticaPartido_05102026 (1).xlsx",
+    "estadisticaPartido_27102026.xlsx",
+    "estadisticaPartido_27102026 (1).xlsx",
+    "estadisticaPartido_27102026 (2).xlsx",
+    "estadisticaPartido_27102026 (3).xlsx",
     "jugadores_05102026.xlsx",
-    "estadisticaPartido_05102026 (1).pdf",
-    "estadisticaPartido_19102026.xlsx",
-    "estadisticaPartido_19102026 (1).xlsx",
-    "cant_gc.pdf"
+    "resultados-clasificacion-proxima.pdf"
   ],
   "competition": "Competición Autonómica FCB 26/27",
   "team": "Canterbury School",
@@ -25,19 +26,19 @@
   ],
   "classification": {
     "rank": 2,
-    "played": 3,
-    "wins": 3,
+    "played": 6,
+    "wins": 6,
     "losses": 0,
-    "points": 6,
+    "points": 12,
     "winRate": 1
   },
   "lastVerifiedMatchday": {
-    "date": "2026-10-19",
-    "round": 5,
+    "date": "2026-10-25",
+    "round": 6,
     "competition": "Cadete A Fem · Competición Autonómica · FCB 2026/27",
     "matches": [
-      {"team":"Canterbury School","opponent":"Gran Canaria","for":67,"against":64,"result":"win","source":"estadisticaPartido_19102026.xlsx"},
-      {"team":"Santa Cruz","opponent":"Obras y Servicios Fede BG EB Felipe Antón","for":66,"against":61,"result":"win","source":"estadisticaPartido_19102026 (1).xlsx"}
+      {"team":"Canterbury School","opponent":"Santa Cruz","for":89,"against":54,"result":"win","source":"estadisticaPartido_27102026.xlsx"},
+      {"team":"EBFA Carlota Belleza y Bienestar","opponent":"Cajasiete Fundación CB Canarias","for":23,"against":74,"result":"win","source":"estadisticaPartido_27102026 (1).xlsx"}
     ]
   },
   "nextMatch": {
@@ -50,6 +51,31 @@
     "sourceStatus": "calendario local FCB; confirmar hora y pabellón en Gesdeportiva antes del partido"
   },
   "documentedMatches": [
+    {
+      "date": "2026-10-25",
+      "round": 6,
+      "opponent": "Santa Cruz",
+      "for": 89,
+      "against": 54,
+      "margin": 35,
+      "result": "win",
+      "team": {
+        "twoMade": 20,
+        "twoAttempts": 20,
+        "threeMade": 12,
+        "threeAttempts": 12,
+        "freeMade": 13,
+        "freeAttempts": 20,
+        "rebounds": null,
+        "assists": null,
+        "steals": null,
+        "turnovers": null,
+        "fouls": 30,
+        "valuation": 52
+      },
+      "dataQuality": "Acta local de la jornada 6; los campos de rebotes, asistencias, recuperaciones y pérdidas aparecen incompletos.",
+      "source": "estadisticaPartido_27102026.xlsx"
+    },
     {
       "date": "2026-10-19",
       "round": 5,
