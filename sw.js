@@ -1,4 +1,4 @@
-const CACHE_NAME='cancha-v8-next-cajasiete-2026-10-30';
+const CACHE_NAME='cancha-v9-cajasiete-real-stats-2026-10-35';
 const ASSETS=['./','./index.html','./styles.css','./app-plus.css','./app-interaction.css','./app.js','./app-plus.js','./manifest.json','./bsb-logo.png','./data/club-stats.json','./data/cajasiete-scout.json','./data/santa-cruz-scout.json','./data/felipe-anton-scout.json','./docs/FUENTES_ESTRATEGIA_BALONCESTO.md','./docs/FUENTES_COMUNICACION_FAMILIAS.md','./docs/FUENTES_PSICOLOGIA_DEPORTIVA.md','./docs/FUENTES_FCB.md','./docs/CRITERIOS_AGENTE.md'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));

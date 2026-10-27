@@ -2,57 +2,158 @@
   "team": "Cajasiete Fundación CB Canarias",
   "category": "Cadete A Femenina · Competición Autonómica · FCB 2026/27",
   "role": "next-opponent-scouting",
-  "sourceType": "calendario local FCB",
-  "sourceFiles": ["fuentes/calendario.pdf"],
-  "lastVerifiedMatchday": null,
-  "coverage": "El calendario confirma el próximo emparejamiento, pero la carpeta de estadísticas no contiene todavía un acta ni estadísticas verificables de Cajasiete para preparar un scouting específico.",
-  "matches": [],
-  "signalsToVerify": [],
+  "sourceType": "estadísticas locales FCB entregadas para el proyecto",
+  "sourceFiles": [
+    "caja7-akitas.ods",
+    "caja7-EBFA 241026.ods",
+    "caja7-goleta.ods",
+    "caja7-lasalle.ods",
+    "caja7-nuriana (1).ods",
+    "caja7-nuriana.ods",
+    "caja7_central.ods",
+    "estadisticaPartido_27102026 (1).xlsx",
+    "estadisticaPartido_27102026 (2) (1).xlsx",
+    "estadisticaPartido_27102026 (2).xlsx",
+    "estadisticaPartido_27102026 (3).xlsx"
+  ],
+  "lastVerifiedMatchday": "2026-10-27",
+  "coverage": "Seis partidos únicos de Cajasiete; se conservan las fuentes duplicadas y se excluyen de los promedios repetidos.",
+  "matches": [
+    {
+      "date": null,
+      "opponent": "Aikitas",
+      "teamPoints": 84,
+      "opponentPoints": 38,
+      "source": "caja7-akitas.ods"
+    },
+    {
+      "date": null,
+      "opponent": "C.B. La Salle San Ildefonso",
+      "teamPoints": 57,
+      "opponentPoints": 7,
+      "source": "caja7-lasalle.ods"
+    },
+    {
+      "date": null,
+      "opponent": "EBFA Carlota Belleza y Bienestar",
+      "teamPoints": 74,
+      "opponentPoints": 23,
+      "source": "caja7-EBFA 241026.ods"
+    },
+    {
+      "date": null,
+      "opponent": "Nuryana",
+      "teamPoints": 71,
+      "opponentPoints": 33,
+      "source": "caja7-nuriana (1).ods"
+    },
+    {
+      "date": null,
+      "opponent": "Rest. Araucaria Goleta",
+      "teamPoints": 69,
+      "opponentPoints": 18,
+      "source": "caja7-goleta.ods"
+    },
+    {
+      "date": null,
+      "opponent": "Tenerife Central Alteza",
+      "teamPoints": 74,
+      "opponentPoints": 46,
+      "source": "caja7_central.ods"
+    }
+  ],
+  "signalsToVerify": [
+    {
+      "dorsal": 14,
+      "points": 17
+    },
+    {
+      "dorsal": 99,
+      "points": 15
+    },
+    {
+      "dorsal": 8,
+      "points": 12
+    },
+    {
+      "dorsal": 19,
+      "points": 12
+    },
+    {
+      "dorsal": 1,
+      "points": 11
+    },
+    {
+      "dorsal": 30,
+      "points": 11
+    },
+    {
+      "dorsal": 0,
+      "points": 10
+    },
+    {
+      "dorsal": 6,
+      "points": 10
+    }
+  ],
   "trainingPlan": [
     {
-      "title": "Revisión del plan propio y comunicación",
-      "duration": "15 min",
-      "evidence": "No hay datos del rival disponibles. Se prepara una tarea transferible sin atribuir fortalezas a Cajasiete.",
-      "blocks": ["5x5 con comunicación obligatoria en ayudas", "Registrar pérdidas propias y rebotes defensivos", "Revisar una decisión concreta después de cada error"]
+      "title": "Defensa sobre referencias anotadoras",
+      "duration": "20 min",
+      "evidence": "Los partidos locales permiten identificar dorsales anotadores, no posiciones ni roles permanentes.",
+      "blocks": [
+        "5x5 con comunicación en ayudas",
+        "Cambios de asignación tras bloqueo",
+        "Registrar tiros y finalizaciones del dorsal observado"
+      ]
     },
     {
-      "title": "Salida segura y balance defensivo",
-      "duration": "15 min",
-      "evidence": "La presión y la transición de Cajasiete deben comprobarse en pista o mediante acta/vídeo autorizado.",
-      "blocks": ["4x4 desde saque con dos apoyos", "Parar balón tras pérdida", "Finalizar cada defensa con rebote y primera comunicación"]
+      "title": "Control del rebote y transición",
+      "duration": "20 min",
+      "evidence": "Las actas muestran resultados y tiro, pero los campos de rebote y pérdidas del rival son incompletos.",
+      "blocks": [
+        "Bloqueo de rebote tras cada tiro",
+        "Primer pase seguro",
+        "Parar balón después de pérdida"
+      ]
     },
     {
-      "title": "Preparación para escenarios de partido",
-      "duration": "15 min",
-      "evidence": "Sin scouting rival, se entrenan respuestas que el equipo ya puede ejecutar antes del encuentro.",
-      "blocks": ["Marcador igualado con reloj", "Defensa cerrada y ataque con pase extra", "Salida ante presión a toda pista"]
+      "title": "Ataque ante defensa cerrada",
+      "duration": "20 min",
+      "evidence": "La estrategia se mantiene colectiva hasta confirmar el comportamiento de Cajasiete en pista.",
+      "blocks": [
+        "Invertir balón",
+        "Pase extra antes de penetrar",
+        "Escenario igualado con palabra clave"
+      ]
     }
   ],
   "matchStrategy": {
-    "objective": "Llegar al partido con una respuesta clara de comunicación, balance defensivo y cuidado del balón mientras se completa el scouting de Cajasiete.",
+    "objective": "Reducir pérdidas, cerrar el rebote y llegar a las referencias anotadoras sin fijar emparejamientos solo por una muestra local.",
     "comparison": [
-      "El calendario confirma el rival y la condición de visitante, pero no hay acta estadística de Cajasiete en la carpeta.",
-      "No se deben comparar tiros, rebotes, pérdidas o jugadoras hasta disponer de una fuente verificable del rival.",
-      "La semana debe centrarse en indicadores propios que sí se pueden registrar: pérdidas, rebote defensivo, faltas y comunicación."
+      "Cajasiete dispone de seis partidos únicos en la carpeta organizada.",
+      "Sus marcadores disponibles son suficientes para preparar observación y tiro, pero no para comparar todos los campos: rebotes, asistencias y pérdidas aparecen incompletos.",
+      "La comparación del equipo propio debe usar las actas de Canterbury cargadas por separado."
     ],
     "openingPlan": [
-      "Primeros 5 minutos: identificar ritmo, presión, quién inicia el ataque y cómo ocupa los espacios Cajasiete.",
-      "En cada tiro: bloquear, localizar rival y cerrar el rebote.",
-      "Tras pérdida: parar balón, proteger aro y comunicar la primera ayuda.",
-      "En ataque: pase de seguridad, espacio y decisiones ya entrenadas."
+      "Observar durante los primeros cinco minutos quién inicia el ataque y qué dorsales concentran los tiros.",
+      "Cerrar el rebote en cada lanzamiento.",
+      "Tras pérdida, parar balón y comunicar la primera ayuda.",
+      "En ataque, usar pase extra y salida segura ante presión."
     ],
     "ifThen": [
-      "Si Cajasiete presiona a toda pista, usar dos apoyos y recepción intermedia.",
-      "Si juega defensa cerrada, invertir el balón y evitar penetraciones forzadas.",
-      "Si aparece una referencia anotadora clara, observar primero sus zonas y tipo de finalización antes de ajustar.",
-      "Si el partido se iguala, usar la palabra clave acordada y ejecutar una acción practicada."
+      "Si presiona a toda pista, usar dos apoyos y recepción intermedia.",
+      "Si defiende cerrado, invertir el balón y evitar penetraciones forzadas.",
+      "Si aparece una referencia anotadora, ajustar después de observar zonas y finalizaciones.",
+      "Si el partido se iguala, ejecutar una acción entrenada."
     ],
     "observe": [
       "Presión sobre el primer pase.",
+      "Dorsales que asumen más tiros.",
       "Rebotes ofensivos concedidos.",
       "Pérdidas propias ante presión.",
-      "Comunicación y respuesta tras error."
+      "Respuesta tras error."
     ],
-    "limits": "No hay estadísticas ni acta verificable de Cajasiete. El informe debe actualizarse cuando se incorpore una fuente autorizada."
+    "limits": "Los dorsales son señales de observación de los archivos locales; no son una valoración permanente de jugadoras. Confirmar acta, fecha y categoría antes del partido."
   }
 }
