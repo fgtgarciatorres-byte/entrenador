@@ -1,0 +1,58 @@
+{
+  "team": "Cajasiete Fundación CB Canarias",
+  "category": "Cadete A Femenina · Competición Autonómica · FCB 2026/27",
+  "role": "next-opponent-scouting",
+  "sourceType": "calendario local FCB",
+  "sourceFiles": ["fuentes/calendario.pdf"],
+  "lastVerifiedMatchday": null,
+  "coverage": "El calendario confirma el próximo emparejamiento, pero la carpeta de estadísticas no contiene todavía un acta ni estadísticas verificables de Cajasiete para preparar un scouting específico.",
+  "matches": [],
+  "signalsToVerify": [],
+  "trainingPlan": [
+    {
+      "title": "Revisión del plan propio y comunicación",
+      "duration": "15 min",
+      "evidence": "No hay datos del rival disponibles. Se prepara una tarea transferible sin atribuir fortalezas a Cajasiete.",
+      "blocks": ["5x5 con comunicación obligatoria en ayudas", "Registrar pérdidas propias y rebotes defensivos", "Revisar una decisión concreta después de cada error"]
+    },
+    {
+      "title": "Salida segura y balance defensivo",
+      "duration": "15 min",
+      "evidence": "La presión y la transición de Cajasiete deben comprobarse en pista o mediante acta/vídeo autorizado.",
+      "blocks": ["4x4 desde saque con dos apoyos", "Parar balón tras pérdida", "Finalizar cada defensa con rebote y primera comunicación"]
+    },
+    {
+      "title": "Preparación para escenarios de partido",
+      "duration": "15 min",
+      "evidence": "Sin scouting rival, se entrenan respuestas que el equipo ya puede ejecutar antes del encuentro.",
+      "blocks": ["Marcador igualado con reloj", "Defensa cerrada y ataque con pase extra", "Salida ante presión a toda pista"]
+    }
+  ],
+  "matchStrategy": {
+    "objective": "Llegar al partido con una respuesta clara de comunicación, balance defensivo y cuidado del balón mientras se completa el scouting de Cajasiete.",
+    "comparison": [
+      "El calendario confirma el rival y la condición de visitante, pero no hay acta estadística de Cajasiete en la carpeta.",
+      "No se deben comparar tiros, rebotes, pérdidas o jugadoras hasta disponer de una fuente verificable del rival.",
+      "La semana debe centrarse en indicadores propios que sí se pueden registrar: pérdidas, rebote defensivo, faltas y comunicación."
+    ],
+    "openingPlan": [
+      "Primeros 5 minutos: identificar ritmo, presión, quién inicia el ataque y cómo ocupa los espacios Cajasiete.",
+      "En cada tiro: bloquear, localizar rival y cerrar el rebote.",
+      "Tras pérdida: parar balón, proteger aro y comunicar la primera ayuda.",
+      "En ataque: pase de seguridad, espacio y decisiones ya entrenadas."
+    ],
+    "ifThen": [
+      "Si Cajasiete presiona a toda pista, usar dos apoyos y recepción intermedia.",
+      "Si juega defensa cerrada, invertir el balón y evitar penetraciones forzadas.",
+      "Si aparece una referencia anotadora clara, observar primero sus zonas y tipo de finalización antes de ajustar.",
+      "Si el partido se iguala, usar la palabra clave acordada y ejecutar una acción practicada."
+    ],
+    "observe": [
+      "Presión sobre el primer pase.",
+      "Rebotes ofensivos concedidos.",
+      "Pérdidas propias ante presión.",
+      "Comunicación y respuesta tras error."
+    ],
+    "limits": "No hay estadísticas ni acta verificable de Cajasiete. El informe debe actualizarse cuando se incorpore una fuente autorizada."
+  }
+}

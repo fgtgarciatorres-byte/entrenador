@@ -1,5 +1,5 @@
-const CACHE_NAME='cancha-v10';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.json','./bsb-logo.png','./data/club-stats.json','./data/rival-scout.json','./data/club-insights.json','./data/session-log.json','./library/catalog.json','./library/sources.json','./library/download-manifest.json','./library/validation-report.json','./docs/SKILL_CANCHA_ENTRENADOR.md','./docs/AGENTES_CLUB.md'];
+const CACHE_NAME='cancha-v8-next-cajasiete-2026-10-30';
+const ASSETS=['./','./index.html','./styles.css','./app-plus.css','./app-interaction.css','./app.js','./app-plus.js','./manifest.json','./bsb-logo.png','./data/club-stats.json','./data/cajasiete-scout.json','./data/santa-cruz-scout.json','./data/felipe-anton-scout.json','./docs/FUENTES_ESTRATEGIA_BALONCESTO.md','./docs/FUENTES_COMUNICACION_FAMILIAS.md','./docs/FUENTES_PSICOLOGIA_DEPORTIVA.md','./docs/FUENTES_FCB.md','./docs/CRITERIOS_AGENTE.md'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));return response;}))));

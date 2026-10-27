@@ -7,79 +7,74 @@
     "estadisticaPartido_05102026 (1).xlsx",
     "jugadores_05102026.xlsx",
     "estadisticaPartido_05102026 (1).pdf",
-    "estadisticaPartido_19102026.xlsx"
+    "estadisticaPartido_19102026.xlsx",
+    "estadisticaPartido_19102026 (1).xlsx",
+    "cant_gc.pdf"
   ],
   "competition": "Competición Autonómica FCB 26/27",
   "team": "Canterbury School",
   "scope": "scouting-oponente",
-  "lastUpdated": "2026-10-19",
-  "officialSource": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
   "note": "La carpeta analizada contiene clasificación y estadísticas de Canterbury School y sus rivales. Se usa como referencia de preparación, no como registro del equipo Santa Brígida.",
   "externalSources": [
     {
       "name": "Gesdeportiva FCB",
       "url": "https://gesdeportiva.fcbaloncesto.es/competiciones-6/FederacionCanaria",
-      "status": "consulta manual verificada el 19/10/2026",
-      "accessCheck": "La consulta automatizada recibe HTTP 403; la temporada 26/27, Competición Autonómica, Cadete Femenina, Liga Regular, grupo A, el resultado y la clasificación se verificaron manualmente en la interfaz oficial."
+      "status": "referencia externa pendiente de consulta manual",
+      "accessCheck": "La consulta automatizada recibió HTTP 403. No se han incorporado datos no verificables."
     }
   ],
   "classification": {
     "rank": 2,
-    "played": 5,
-    "wins": 5,
+    "played": 3,
+    "wins": 3,
     "losses": 0,
-    "points": 10,
-    "pointsFor": 360,
-    "pointsAgainst": 201,
+    "points": 6,
     "winRate": 1
   },
-  "latestResult": {
-    "date": "15/10/2026",
-    "opponent": "Gran Canaria",
-    "for": 67,
-    "against": 64,
-    "margin": 3,
-    "result": "win",
-    "dataLevel": "resultado oficial con boxscore detallado"
+  "lastVerifiedMatchday": {
+    "date": "2026-10-19",
+    "round": 5,
+    "competition": "Cadete A Fem · Competición Autonómica · FCB 2026/27",
+    "matches": [
+      {"team":"Canterbury School","opponent":"Gran Canaria","for":67,"against":64,"result":"win","source":"estadisticaPartido_19102026.xlsx"},
+      {"team":"Santa Cruz","opponent":"Obras y Servicios Fede BG EB Felipe Antón","for":66,"against":61,"result":"win","source":"estadisticaPartido_19102026 (1).xlsx"}
+    ]
   },
-  "latestBoxscore": {
-    "sourceFile": "estadisticaPartido_19102026.xlsx",
-    "opponent": "Gran Canaria",
-    "for": 67,
-    "against": 64,
-    "margin": 3,
-    "result": "win",
-    "team": {
-      "twoMade": 19,
-      "twoAttempts": 19,
-      "twoPercentage": 100,
-      "threeMade": 4,
-      "threeAttempts": 4,
-      "threePercentage": 100,
-      "freeMade": 17,
-      "freeAttempts": 29,
-      "freePercentage": 59,
-      "rebounds": 0,
-      "assists": 0,
-      "steals": 0,
-      "turnovers": 0,
-      "fouls": 26,
-      "valuation": 29
-    },
-    "topContributors": [
-      { "dorsal": 2, "points": 26 },
-      { "dorsal": 13, "points": 14 },
-      { "dorsal": 4, "points": 13 }
-    ],
-    "dataNote": "El archivo presenta cero en rebotes, asistencias, recuperaciones y pérdidas; se conserva tal como aparece y no se interpreta como ausencia real de esas acciones."
-  },
-  "upcomingMatch": {
-    "date": "24/10/2026",
-    "opponent": "Santa Cruz",
-    "venue": "Pabellón Canterbury School",
-    "status": "programado"
+  "nextMatch": {
+    "date": "2026-11-01",
+    "round": 7,
+    "team": "Canterbury School",
+    "opponent": "Cajasiete Fundación CB Canarias",
+    "venue": "Visitante",
+    "source": "fuentes/calendario.pdf",
+    "sourceStatus": "calendario local FCB; confirmar hora y pabellón en Gesdeportiva antes del partido"
   },
   "documentedMatches": [
+    {
+      "date": "2026-10-19",
+      "round": 5,
+      "opponent": "Gran Canaria",
+      "for": 67,
+      "against": 64,
+      "margin": 3,
+      "result": "win",
+      "team": {
+        "twoMade": 19,
+        "twoAttempts": 19,
+        "threeMade": 4,
+        "threeAttempts": 4,
+        "freeMade": 17,
+        "freeAttempts": 29,
+        "rebounds": null,
+        "assists": null,
+        "steals": null,
+        "turnovers": null,
+        "fouls": 26,
+        "valuation": 29
+      },
+      "dataQuality": "La hoja no aporta rebotes, asistencias, recuperaciones ni pérdidas utilizables. Los porcentajes de tiro aparecen como 100% en todos los tiros de campo y deben tratarse como incompletos, no como eficiencia real.",
+      "source": "estadisticaPartido_19102026.xlsx"
+    },
     {
       "opponent": "Rest. Araucaria Goleta",
       "for": 80,
@@ -165,12 +160,6 @@
       "duration": "10 min",
       "why": "La ventaja media documentada es de 26,5 puntos. Conviene entrenar concentración y comunicación cuando el partido se aprieta.",
       "blocks": ["Juego reducido con objetivo de comunicación", "Cada jugador nombra una ayuda útil de un compañero", "Mensaje final centrado en esfuerzo y decisión"]
-    },
-    {
-      "title": "Resolver los últimos tres minutos",
-      "duration": "15 min",
-      "why": "La última victoria fue 67–64 ante Gran Canaria. El próximo bloque debe entrenar decisiones, comunicación y tiros libres con marcador ajustado.",
-      "blocks": ["5x5 desde 64–64 con tres minutos de reloj", "Una posesión para atacar y una para defender tras cada pausa", "Cierre con tiro libre, balance y mensaje breve de confianza"]
     }
   ]
 }
